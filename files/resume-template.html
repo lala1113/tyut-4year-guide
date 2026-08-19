@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>校园简历模板 · 太原理工大学四年生涯规划指南</title>
+<style>
+  :root { --blue:#005BAC; --orange:#FF8C00; --ink:#1c2b3a; --mut:#5b6b7e; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    color: var(--ink); background: #f2f6fb; line-height: 1.6; font-size: 14px;
+  }
+  .toolbar {
+    position: sticky; top: 0; z-index: 9;
+    display: flex; gap: 12px; align-items: center; justify-content: center;
+    padding: 12px; background: #fff; border-bottom: 1px solid #e3ecf6;
+  }
+  .toolbar button, .toolbar a {
+    border: none; border-radius: 8px; padding: 8px 18px; cursor: pointer;
+    font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block;
+  }
+  .btn-print { background: var(--blue); color: #fff; }
+  .btn-back { background: #eef4fb; color: var(--blue); }
+  .toolbar .hint { font-size: 12.5px; color: var(--mut); }
+  .page {
+    max-width: 820px; margin: 24px auto 48px; background: #fff;
+    padding: 44px 52px; box-shadow: 0 4px 20px rgba(0,91,172,.10);
+    border-radius: 6px;
+  }
+  .resume-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 3px solid var(--blue); }
+  .resume-head h1 { font-size: 30px; letter-spacing: 2px; }
+  .resume-head .intent { color: var(--blue); font-weight: 700; font-size: 15px; }
+  .contact-line { text-align: right; font-size: 13px; color: var(--mut); line-height: 1.9; }
+  section { margin-top: 20px; }
+  .sec-title {
+    font-size: 16px; font-weight: 700; color: var(--blue);
+    border-left: 4px solid var(--orange); padding-left: 10px; margin-bottom: 10px;
+  }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px; }
+  .row b { font-size: 14.5px; }
+  .row .time { color: var(--mut); font-size: 12.5px; flex: none; }
+  ul { padding-left: 20px; }
+  li { margin-top: 3px; }
+  .placeholder { color: #8fa1b5; font-style: normal; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .skill-tags span { background: #eef4fb; color: var(--blue); border-radius: 20px; padding: 3px 12px; font-size: 13px; }
+  @media print {
+    .toolbar { display: none; }
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 24px 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button class="btn-print" onclick="window.print()">🖨️ 打印 / 另存为 PDF</button>
+  <a class="btn-back" href="../index.html#resources">← 返回主站</a>
+  <span class="hint">提示：点击文字即可在浏览器中直接修改，改完打印为 PDF</span>
+</div>
+
+<div class="page" id="resume">
+  <div class="resume-head">
+    <div>
+      <h1 contenteditable="true">你的姓名</h1>
+      <p class="intent" contenteditable="true">求职意向：XX 岗位 / 实习</p>
+    </div>
+    <div class="contact-line" contenteditable="true">
+      电话：138-0000-0000<br>
+      邮箱：name@example.com<br>
+      籍贯 / 政治面貌：山西太原 / 共青团员<br>
+      太原理工大学 · XX学院 · XX专业 · 20XX级
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-title">教育背景</div>
+    <div class="row">
+      <b>太原理工大学（国家211 / 双一流） · 本科</b>
+      <span class="time">20XX.09 — 20XX.06（预计）</span>
+    </div>
+    <ul>
+      <li>专业：<span class="placeholder">XX专业</span>（主修课程：……）</li>
+      <li>GPA：<span class="placeholder">3.6 / 5.0</span>，专业排名 <span class="placeholder">前 20%</span></li>
+      <li>英语：CET-4 <span class="placeholder">XXX</span> / CET-6 <span class="placeholder">XXX</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-title">实习 / 实践经历</div>
+    <div class="row">
+      <b>公司 / 单位名称 · 岗位</b>
+      <span class="time">20XX.07 — 20XX.09</span>
+    </div>
+    <ul>
+      <li><span class="placeholder">用 STAR 法则描述：背景 → 任务 → 行动 → 结果，尽量量化（如“提升了 30% 效率”）</span></li>
+      <li><span class="placeholder">第二段经历同理，突出与岗位相关的成果</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-title">项目 / 竞赛经历</div>
+    <div class="row">
+      <b><span class="placeholder">项目名 / 竞赛名（如数学建模国赛）</span></b>
+      <span class="time">20XX.XX — 20XX.XX</span>
+    </div>
+    <ul>
+      <li><span class="placeholder">担任角色、解决的问题、取得的名次或成果（全国二等奖 / 校一等奖等）</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-title">技能与证书</div>
+    <div class="skill-tags">
+      <span contenteditable="true">Office</span>
+      <span contenteditable="true">Python</span>
+      <span contenteditable="true">CAD</span>
+      <span contenteditable="true">CET-4/6</span>
+      <span contenteditable="true">普通话二级甲等</span>
+    </div>
+    <p style="margin-top:8px; color:var(--mut); font-size:12.5px;">（点击标签可修改，也可自行增删）</p>
+  </section>
+
+  <section>
+    <div class="sec-title">自我评价</div>
+    <p contenteditable="true"><span class="placeholder">用 2-3 句话概括自己的优势与岗位匹配度，避免空话套话，如“具备扎实的 X 基础与项目经验，善于沟通协作，抗压能力强”。</span></p>
+  </section>
+</div>
+</body>
+</html>

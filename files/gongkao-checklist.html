@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>考公备考清单 · 太原理工大学四年生涯规划指南</title>
+<style>
+  :root { --blue:#005BAC; --orange:#FF8C00; --ink:#1c2b3a; --mut:#5b6b7e; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    color: var(--ink); background: #f2f6fb; line-height: 1.7; font-size: 14px;
+  }
+  .toolbar {
+    position: sticky; top: 0; z-index: 9;
+    display: flex; gap: 12px; align-items: center; justify-content: center;
+    padding: 12px; background: #fff; border-bottom: 1px solid #e3ecf6;
+  }
+  .toolbar button, .toolbar a {
+    border: none; border-radius: 8px; padding: 8px 18px; cursor: pointer;
+    font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block;
+  }
+  .btn-print { background: var(--blue); color: #fff; }
+  .btn-back { background: #eef4fb; color: var(--blue); }
+  .page { max-width: 860px; margin: 24px auto 48px; background: #fff; padding: 40px 48px; box-shadow: 0 4px 20px rgba(0,91,172,.10); border-radius: 6px; }
+  h1 { font-size: 24px; color: var(--blue); border-bottom: 3px solid var(--orange); padding-bottom: 10px; margin-bottom: 6px; }
+  .sub { color: var(--mut); font-size: 13px; margin-bottom: 20px; }
+  h2 { font-size: 17px; color: var(--blue); margin: 22px 0 10px; border-left: 4px solid var(--orange); padding-left: 10px; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+  th, td { border: 1px solid #dbe6f2; padding: 8px 12px; text-align: left; font-size: 13.5px; }
+  th { background: #eef4fb; color: var(--blue); }
+  ul { padding-left: 22px; }
+  li { margin-top: 4px; }
+  .tag { display: inline-block; background: #eef4fb; color: var(--blue); border-radius: 20px; padding: 1px 10px; font-size: 12.5px; margin-right: 6px; }
+  .warn { background: #fff7ed; border-left: 4px solid var(--orange); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13.5px; }
+  @media print {
+    .toolbar { display: none; }
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 24px 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button class="btn-print" onclick="window.print()">🖨️ 打印本清单</button>
+  <a class="btn-back" href="../index.html#resources">← 返回主站</a>
+</div>
+
+<div class="page">
+  <h1>考公备考清单（国考 / 省考 / 选调生）</h1>
+  <p class="sub">太原理工大学四年生涯规划指南 · 资料下载 · 更新于 2026-08（以当年公告为准）</p>
+
+  <h2>一、三条路径对比</h2>
+  <table>
+    <tr><th>路径</th><th>组织方</th><th>招录对象</th><th>时间（参考）</th></tr>
+    <tr><td><b>国考</b></td><td>中央公务员局</td><td>全国应届 / 社会</td><td>10 月公告、11-12 月笔试</td></tr>
+    <tr><td><b>省考 / 联考</b></td><td>各省组织</td><td>各省户籍 / 应届</td><td>次年 1-3 月公告、3-4 月笔试（山西近年参加联考）</td></tr>
+    <tr><td><b>选调生（含定向）</b></td><td>各省党委组织部门</td><td>重点高校应届（太原理工在定向名单内）</td><td>10-12 月公告，招录时间早于省考</td></tr>
+  </table>
+  <div class="warn">定向选调是太原理工同学的重要机会：面向 211 等高校定向招录，通常要求<b>党员（含预备）、学生干部经历、应届</b>等条件，报名门槛高但竞争相对小，详见主站考公板块。</div>
+
+  <h2>二、行测五大模块（题量与时间分配）</h2>
+  <table>
+    <tr><th>模块</th><th>题量参考</th><th>建议用时</th><th>提分关键</th></tr>
+    <tr><td>常识判断</td><td>20 题</td><td>8-10 分钟</td><td>平时积累，不纠结</td></tr>
+    <tr><td>言语理解</td><td>40 题</td><td>35 分钟</td><td>逻辑填空靠语感+真题，片段阅读抓主旨</td></tr>
+    <tr><td>数量关系</td><td>15 题</td><td>15-20 分钟</td><td>会做的全做对，难题果断放弃</td></tr>
+    <tr><td>判断推理</td><td>40 题</td><td>35 分钟</td><td>图推规律、逻辑论证是重点</td></tr>
+    <tr><td>资料分析</td><td>20 题</td><td>25 分钟</td><td><b>性价比最高</b>，练到全对</td></tr>
+  </table>
+
+  <h2>三、备考时间表（以国考为例）</h2>
+  <table>
+    <tr><th>阶段</th><th>时间</th><th>任务</th></tr>
+    <tr><td>基础期</td><td>3 - 6 月</td><td>行测分模块听课刷题（980 系统课 / 名师课，见主站视频专区）；申论每周 1-2 篇真题</td></tr>
+    <tr><td>强化期</td><td>7 - 8 月</td><td>行测模块限时训练；申论积累素材（人民日报评论、半月谈）；关注选调公告动向</td></tr>
+    <tr><td>实战期</td><td>9 - 10 月</td><td>整套真题模拟（严格掐表）；国考公告发布后选岗报名；同时可关注各省定向选调</td></tr>
+    <tr><td>冲刺期</td><td>11 月 - 考前</td><td>行测错题重刷、申论作文批改；面试提前了解（结构化 / 无领导，见视频专区）</td></tr>
+  </table>
+
+  <h2>四、必备资料与渠道</h2>
+  <ul>
+    <li><span class="tag">教材</span>行测模块书 + 近 5 年国考/省考真题（纸质版限时做）</li>
+    <li><span class="tag">课程</span>B站公考 980 系统课（127 集）、刘文超 / 阿里木江 / 花生十三名师课（见主站视频专区）</li>
+    <li><span class="tag">官方</span>国家公务员局（www.scs.gov.cn）、山西省人事考试网、各省组织部公告</li>
+    <li><span class="tag">积累</span>人民日报评论、学习强国、半月谈——申论素材来源</li>
+  </ul>
+
+  <h2>五、选岗与避坑提醒</h2>
+  <div class="warn">
+    ① 选岗看报录比与专业限制，限制越细竞争越小；② 应届身份非常宝贵（大量岗位仅限应届）；
+    ③ 定向选调与国考/省考时间可能冲突，提前规划是否都报；④ 面试占比高（通常 50%），笔试后别松懈；
+    ⑤ 基层锻炼是选调生必经阶段，决定报考前了解清楚服务年限与后续发展。
+  </div>
+</div>
+</body>
+</html>

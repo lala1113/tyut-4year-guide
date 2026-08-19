@@ -1,0 +1,24 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Deploy artifacts
+deploy.zip
+deploy-*.zip
+
+# Internal reference (not part of public site)
+docs/
+internal-ref/
+BACKLOG.md
+
+# Logs
+*.log
+npm-debug.log*
