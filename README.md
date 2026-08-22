@@ -2,7 +2,9 @@
 
 > 面向太原理工大学（TYUT）学生的四年职业生涯规划指南网站，纯前端实现，无需后端。
 
-线上地址：https://223500f94b454e85895eda60dfe6969f.sh4.agentos-app.net
+线上地址：https://lala1113.github.io/tyut-4year-guide/
+
+> 由 GitHub Pages 永久托管，`git push` 后自动更新（1–2 分钟生效）。
 
 ## 项目简介
 
