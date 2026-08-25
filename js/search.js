@@ -1,242 +1,143 @@
 /**
- * search.js — 站内全文搜索（纯前端，零依赖）
- *
- * 原理：
- *   1. 静态索引：手动维护的板块级条目（标题 + 描述 + 关键词标签 + 锚点）
- *   2. 动态索引：页面加载后扫描 DOM 中的标题/FAQ/卡片等元素自动补充
- *   3. 搜索时合并两套索引，按 title > tags > desc 权重排序，取前 8 条
- *
- * 用法：main.js 中调用 window.SiteSearch.init()
+ * 站内搜索 v3：内容类型 / 发展方向 / 官方来源筛选、关键词高亮、热门搜索与本地历史。
+ * 纯前端实现，不发送搜索词或浏览记录。
  */
 (function () {
   'use strict';
 
-  /* ========== 静态索引：板块级核心条目 ========== */
+  var HISTORY_KEY = 'tyutCareerGuide.v3.searchHistory';
+  var TYPE_LABELS = { policy: '政策', experience: '经验', video: '视频', resource: '资料', tool: '工具' };
+  var DIRECTION_LABELS = { all: '全方向', foundation: '基础', baoyan: '保研', kaoyan: '考研', kaogong: '考公', jiuye: '就业', campus: '校园' };
+
   var STATIC_INDEX = [
-    {
-      title: '首页 · 太原理工大学四年生涯规划指南',
-      desc: '保研、考研、考公、直接就业四条路，按年级整理成一条清晰的路',
-      href: '#home',
-      tags: ['首页', '主页', '太原理工', 'tyut', '规划', '指南', '生涯', '四年', '大学生', '迎西', '虎峪', '柏林', '明向']
-    },
-    {
-      title: '基础篇 · 学业基石',
-      desc: '四六级、转专业、评奖评优、挂科警示——所有方向的"地基"',
-      href: '#foundation',
-      tags: ['基础篇', '四六级', 'cet', 'cet4', 'cet6', '转专业', '评奖评优', '综测', '综合素质测评', '奖学金', '挂科', '重修', '绩点', 'gpa', 'faq', '问答', '时间轴', '全局时间轴', '大一', '大二', '大三', '大四', '学业', '基石']
-    },
-    {
-      title: '全局大学四年时间轴（总览）',
-      desc: '大一打基础 → 大二定方向 → 大三拼冲刺 → 大四收成果，四大方向串成主线',
-      href: '#foundation',
-      tags: ['时间轴', '总览', '时间线', '大一', '大二', '大三', '大四', '全局', '主线', '四年规划']
-    },
-    {
-      title: '四六级备考',
-      desc: '推免四级425+/直博六级425+，2026下半年报名9月中下旬、笔试12月，分项备考攻略',
-      href: '#foundation',
-      tags: ['四六级', 'cet4', 'cet6', '英语四级', '英语六级', '报名', '笔试', '听力', '阅读', '写作', '翻译', '单词', '备考', '425']
-    },
-    {
-      title: '转专业政策',
-      desc: 'GPA排名前60%可申请，2个志愿按GPA排序录取，专长生/退伍复学另有通道',
-      href: '#foundation',
-      tags: ['转专业', '转系', '转院', 'gpa', '排名', '前60%', '志愿', '教务', '通知', '专长生']
-    },
-    {
-      title: '评奖评优 · 综测加分',
-      desc: '综测=基本素质(思想品德+学业+身心)+能力素质加分，奖学金一等1800/二等1200/三等600',
-      href: '#foundation',
-      tags: ['评奖评优', '综测', '综合素质测评', '奖学金', '一等奖', '二等奖', '三等奖', '1800', '1200', '600', '国家奖学金', '励志奖学金', '校长奖学金', '加分', '思想品德', '学业成绩', '身心素质', '能力素质']
-    },
-    {
-      title: '挂科 · 重修警示',
-      desc: '保研一票否决、入党受影响、奖学金取消，重修绩点×0.6并注明"重修"',
-      href: '#foundation',
-      tags: ['挂科', '不及格', '重修', '补考', '绩点', '0.6', '警示', '一票否决', '处分', '作弊']
-    },
-    {
-      title: '保研 · 推免',
-      desc: '推荐免试攻读研究生，综合排名+科创加分，3+1+4本博贯通，保研率约11.87%',
-      href: '#baoyan',
-      tags: ['保研', '推免', '免试', '研究生', '夏令营', '预推免', '保资', '支教保研', '辅导员', '竞赛加分', '科创分', '3+1+4', '本博贯通', '直博', '竞赛目录', '推免系统', '优秀营员', '11.87%']
-    },
-    {
-      title: '保研 · 四年时间线',
-      desc: '大一打基础→大二稳排名→大三定目标/夏令营→大四系统填报与复试',
-      href: '#baoyan',
-      tags: ['保研', '推免', '时间线', '夏令营', '预推免', '5-8月', '9月', '10月20日', '复试', '导师', '邮件']
-    },
-    {
-      title: '保研 · 政策条件解读',
-      desc: '推免基本条件、综合成绩排名、科创成绩认定、3+1+4本博贯通、支教团保资辅导员',
-      href: '#baoyan',
-      tags: ['保研', '推免', '政策', '条件', '综合成绩', '排名', '科创成绩', '3+1+4', '本博贯通', '支教团', '保资辅导员', 'cet4', '425']
-    },
-    {
-      title: '有效竞赛目录（2024年版）',
-      desc: '依据校学〔2024〕10号，获奖可作推免科创成绩认定与综测加分依据',
-      href: '#baoyan',
-      tags: ['竞赛', '目录', '2024', '校学', '10号', '评级', 's级', 'a级', 'b级', '数学建模', '电赛', '智能车', '科创加分']
-    },
-    {
-      title: '考研 · 统考',
-      desc: '全国硕士研究生统一招生考试，数学英语政治专业课，初试+复试全流程',
-      href: '#kaoyan',
-      tags: ['考研', '统考', '研究生', '硕士', '初试', '复试', '调剂', '国家线', '数学', '英语', '政治', '专业课', '660题', '35.02%']
-    },
-    {
-      title: '考研 · 四年时间线',
-      desc: '大一夯地基→大二定方向→大三系统复习→大四报名冲刺→复试调剂',
-      href: '#kaoyan',
-      tags: ['考研', '时间线', '数学', '英语', '政治', '专业课', '9月', '10月', '12月', '初试', '复试', '调剂', '2月', '3月']
-    },
-    {
-      title: '考公 · 选调',
-      desc: '国考/省考/定向选调，应届身份是关键窗口，山西选调588人',
-      href: '#kaogong',
-      tags: ['考公', '公务员', '选调', '选调生', '定向选调', '国考', '省考', '行测', '申论', '结构化面试', '无领导', '入党', '党员', '学生干部', '588', '山西省', '政审']
-    },
-    {
-      title: '考公 · 四年时间线',
-      desc: '大一定身份→大二攒履历→大三系统备考→大四国考选调→省考面试政审',
-      href: '#kaogong',
-      tags: ['考公', '时间线', '入党', '学生干部', '行测', '申论', '国考', '10月', '11月', '选调', '12月', '省考', '面试', '政审']
-    },
-    {
-      title: '直接就业',
-      desc: '秋招春招黄金期，国企央企签约占比约37%，去向集中北京太原上海',
-      href: '#jiuye',
-      tags: ['就业', '秋招', '春招', '实习', '简历', '面试', '国企', '央企', '校园招聘', '双选会', '三方协议', '宏志助航', '求职训练营', '37%', '北京', '太原', '上海', '制造业']
-    },
-    {
-      title: '就业 · 四年时间线',
-      desc: '大一自我探索→大二简历从0到1→大三实习冲刺→大四秋招→春招补录签约',
-      href: '#jiuye',
-      tags: ['就业', '时间线', '实习', '简历', '秋招', '9月', '11月', '春招', '3月', '5月', '三方协议', '签约', 'offer']
-    },
-    {
-      title: '学长学姐说',
-      desc: '来自官网、B站、知乎及公开报道的真实分享，每句标注来源',
-      href: '#seniors',
-      tags: ['学长', '学姐', '经验', '分享', '语录', '徐振然', '侯敏', '王涵', '李城龙', '王海港', '我们的太理', '延时摄影', '知乎', '信息差', '北京大学', '大连理工']
-    },
-    {
-      title: '视频资源专区',
-      desc: 'B站原视频与UP主空间直达入口，覆盖四大方向及校内课程',
-      href: '#videos',
-      tags: ['视频', 'b站', '哔哩哔哩', 'up主', '花生十三', '物电学院', '凌云悟理', '宋浩', '田静', '980系统课', '敖丙', '秋招', '武忠祥']
-    },
-    {
-      title: '资料下载',
-      desc: '简历模板、四六级/考研/考公备考清单，可打印另存',
-      href: '#resources',
-      tags: ['资料', '下载', '模板', '简历模板', '四六级清单', '考研清单', '考公清单', '打印', 'pdf']
-    },
-    {
-      title: '联系作者',
-      desc: '保研/考研/转专业/科创竞赛/评奖评优问题，扫码加学长微信交流',
-      href: '#contact',
-      tags: ['联系', '作者', '学长', '微信', '二维码', '交流', '咨询', 'yxz', '材料成型', '班长', '综测前10%']
-    }
+    item('首页 · 四年生涯规划指南', '按年级梳理保研、考研、考公与就业四条路线。', '#home', 'tool', 'all', false, '首页 生涯规划 太原理工 四年'),
+    item('本月行动中心', '按年级与当前月份生成三项行动建议，可加入待办并在本机保存进度。', '#action-center', 'tool', 'all', false, '本月 任务 待办 年级 进度 localStorage'),
+    item('六题方向探索', '通过六个选择找到当前更匹配的准备方向，并获得三项下一步行动。', '#assessment', 'tool', 'all', false, '测评 选择 保研 考研 考公 就业'),
+    item('基础篇 · 学业基石', '四六级、转专业、评奖评优、绩点与挂科提醒。', '#foundation', 'policy', 'foundation', true, 'GPA 绩点 学业 大一 大二 四六级'),
+    item('四六级备考与要求', '查询 CET-4、CET-6 的时间安排、准备方法及相关资格要求。', '#foundation', 'policy', 'foundation', true, '英语 四级 六级 425 报名'),
+    item('转专业政策', '查看转专业申请条件、时间窗口和官方通知入口。', '#foundation', 'policy', 'foundation', true, '转专业 GPA 排名 志愿 教务'),
+    item('评奖评优与综测', '奖学金、综合素质测评和能力素质加分说明。', '#foundation', 'policy', 'foundation', true, '综测 奖学金 加分 学生处'),
+    item('挂科与重修提醒', '了解不及格、补考、重修对绩点和推免资格的影响。', '#foundation', 'policy', 'foundation', true, '挂科 重修 补考 不及格'),
+    item('保研 · 推免路径', '推免条件、四年时间线、竞赛目录、夏令营与预推免准备。', '#baoyan', 'policy', 'baoyan', true, '保研资格 推免 夏令营 预推免 直博 排名 竞赛'),
+    item('2026届推免去向查询', '800条匿名记录，支持18个学院、专业和去向院校筛选与统计。', '#promotion', 'tool', 'baoyan', false, '800 学院 专业 院校 去向 统计 匿名'),
+    item('考研 · 统考路径', '从目标院校、公共课和专业课准备到报名、初试、复试与调剂。', '#kaoyan', 'policy', 'kaoyan', true, '研究生 研招网 报名 初试 复试 调剂 数学 英语 政治'),
+    item('考研择校对比工具', '在本机比较3—6所目标院校的专业、考试科目、目标分数和信息来源。', '#school-compare', 'tool', 'kaoyan', false, '择校 院校 专业代码 考试科目 目标分数'),
+    item('考公 · 国考、省考与选调', '公务员考试时间线、职位筛选、行测申论和选调条件。', '#kaogong', 'policy', 'kaogong', true, '公务员 国考 省考 选调生 行测 申论 职位表'),
+    item('直接就业路径', '实习、简历、秋招、春招、面试与签约事项。', '#jiuye', 'policy', 'jiuye', true, '就业 求职 实习 简历 秋招 春招 offer 三方协议'),
+    item('经验与资源中心', '统一查找学长学姐经验、视频与可打印资料，并按方向筛选。', '#resource-hub', 'resource', 'all', false, '资源中心 经验 视频 资料 下载 校园'),
+    item('联系作者', '反馈内容错误、补充经验或提出功能建议。', '#contact', 'resource', 'campus', false, '联系 反馈 作者 勘误 建议')
   ];
 
-  /* ========== FAQ 条目（精准搜索高频问题） ========== */
-  var FAQ_INDEX = [
-    { title: 'FAQ：挂科了还能保研吗？', desc: '原则上不能，推免要求前六学期无不及格课程', href: '#foundation', tags: ['挂科', '保研', '推免', '不及格', '一票否决'] },
-    { title: 'FAQ：综测到底怎么算？', desc: '综测=基本素质(思想品德+学业+身心)+能力素质加分', href: '#foundation', tags: ['综测', '综合素质测评', '计算', '加分', '思想品德', '学业', '身心'] },
-    { title: 'FAQ：选调生和普通公务员有什么区别？', desc: '选调生是党政领导干部后备人选，定向选调竞争更小', href: '#foundation', tags: ['选调生', '公务员', '区别', '定向选调', '国考', '省考'] },
-    { title: 'FAQ：四六级没过影响保研吗？', desc: '影响，推免要求CET-4≥425，直博要求CET-6≥425', href: '#foundation', tags: ['四六级', 'cet4', 'cet6', '保研', '推免', '425', '直博'] },
-    { title: 'FAQ：转专业什么时候能申请？', desc: '学期末集中开展，GPA排名前60%可申请，2个志愿', href: '#foundation', tags: ['转专业', '申请', '时间', 'gpa', '前60%', '志愿'] },
-    { title: 'FAQ：挂科后绩点怎么算？补考过了还有影响吗？', desc: '重修绩点=考试成绩×0.6，成绩单注明"重修"', href: '#foundation', tags: ['挂科', '绩点', '补考', '重修', '0.6'] },
-    { title: 'FAQ：奖学金多久评一次？大概多少钱？', desc: '每学期评一次，一等1800/二等1200/三等600', href: '#foundation', tags: ['奖学金', '评定', '金额', '1800', '1200', '600', '国家奖学金', '8000'] },
-    { title: 'FAQ：大二才开始准备考研，来得及吗？', desc: '完全来得及，关键是数学英语提前打基础', href: '#foundation', tags: ['考研', '大二', '来得及', '数学', '英语', '基础'] }
-  ];
+  function item(title, desc, href, type, direction, official, tags) {
+    return { title: title, desc: desc, href: href, type: type, direction: direction, official: official, tags: tags || '' };
+  }
 
-  /* ========== 动态索引：扫描 DOM 标题元素 ========== */
-  var dynamicIndex = [];
-  var dynamicBuilt = false;
+  function cleanText(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function sectionDirection(id) {
+    if (['foundation', 'baoyan', 'kaoyan', 'kaogong', 'jiuye'].indexOf(id) !== -1) return id;
+    return id === 'promotion' ? 'baoyan' : 'campus';
+  }
+
+  function anchorFor(element) {
+    var section = element.closest('section[id]');
+    if (!section) return '#home';
+    if (['seniors', 'videos', 'resources'].indexOf(section.id) !== -1) return '#resource-hub';
+    return '#' + section.id;
+  }
+
+  function dynamicType(element) {
+    if (element.matches('.video-card, .video-chip')) return 'video';
+    if (element.matches('.quote-card, .exp-card')) return 'experience';
+    if (element.matches('.resource-card')) return 'resource';
+    return 'policy';
+  }
 
   function buildDynamicIndex() {
-    if (dynamicBuilt) return;
-    dynamicBuilt = true;
-    dynamicIndex = [];
-    var sections = document.querySelectorAll('section[id]');
-    sections.forEach(function (sec) {
-      var anchor = '#' + sec.id;
-      var selectors = [
-        '.tl-card h4',          // 时间线卡片标题
-        '.faq-item summary',    // FAQ 问题
-        '.exp-card .exp-meta b', // 学长名字
-        '.quote-card .quote-who b', // 学长学姐名字
-        '.video-card h4',       // 视频卡片标题
-        '.video-chip',          // 视频小链接
-        '.resource-card h4',    // 资料卡片标题
-        '.tl-stage-year',       // 时间轴年级
-        '.hero-card h3',        // Hero 四大方向
-        '.metric strong'        // Hero 数据
-      ];
-      selectors.forEach(function (sel) {
-        sec.querySelectorAll(sel).forEach(function (el) {
-          var text = (el.textContent || '').trim();
-          if (text && text.length >= 2 && text.length <= 50) {
-            // 尝试获取描述
-            var desc = '';
-            var card = el.closest('.tl-card, .faq-item, .exp-card, .quote-card, .video-card, .video-chip, .resource-card');
-            if (card) {
-              var p = card.querySelector('.faq-body p, .exp-quote, .quote-text, .video-body p, .resource-body p, p');
-              if (p) desc = (p.textContent || '').trim().slice(0, 80);
-            }
-            dynamicIndex.push({
-              title: text,
-              desc: desc,
-              href: anchor,
-              tags: []
-            });
-          }
-        });
-      });
-    });
-  }
-
-  /* ========== 合并 + 搜索 ========== */
-  function getFullIndex() {
-    buildDynamicIndex();
-    var seen = {};
-    var all = STATIC_INDEX.concat(FAQ_INDEX, dynamicIndex);
-    var result = [];
-    all.forEach(function (item) {
-      var key = item.title + '|' + item.href;
-      if (!seen[key]) {
-        seen[key] = true;
-        result.push(item);
+    var selector = '.direction h3.block-title, .faq-item summary, .exp-card, .quote-card, .video-card, .resource-card';
+    return Array.prototype.map.call(document.querySelectorAll(selector), function (element) {
+      var section = element.closest('section[id]');
+      var text = cleanText(element.textContent);
+      var heading = element.querySelector && element.querySelector('h4, b, .exp-meta, .quote-who');
+      var title = element.matches('h3, summary') ? text : cleanText(heading ? heading.textContent : text.slice(0, 42));
+      var type = dynamicType(element);
+      var direction = sectionDirection(section ? section.id : 'campus');
+      if (section && ['seniors', 'videos', 'resources'].indexOf(section.id) !== -1) {
+        if (/保研|推免|直博|夏令营/.test(text)) direction = 'baoyan';
+        else if (/考研|上岸|研究生|数学/.test(text)) direction = 'kaoyan';
+        else if (/考公|公务员|选调|行测|申论/.test(text)) direction = 'kaogong';
+        else if (/就业|求职|招聘|面试|简历|实习/.test(text)) direction = 'jiuye';
       }
-    });
-    return result;
+      return item(title, text.slice(title.length, title.length + 180) || text.slice(0, 180), anchorFor(element), type, direction, false, text);
+    }).filter(function (entry) { return entry.title.length > 1; });
   }
 
-  function search(query) {
-    query = query.trim().toLowerCase();
-    if (!query) return [];
-    var index = getFullIndex();
-    var results = [];
-    index.forEach(function (item) {
-      var title = (item.title || '').toLowerCase();
-      var desc = (item.desc || '').toLowerCase();
-      var tags = (item.tags || []).join(' ').toLowerCase();
-      var score = 0;
-      if (title.indexOf(query) !== -1) score += 3;
-      if (tags.indexOf(query) !== -1) score += 2;
-      if (desc.indexOf(query) !== -1) score += 1;
-      if (score > 0) results.push({ item: item, score: score });
+  function dedupe(entries) {
+    var seen = {};
+    return entries.filter(function (entry) {
+      var key = entry.href + '|' + entry.type + '|' + entry.title.slice(0, 60);
+      if (seen[key]) return false;
+      seen[key] = true;
+      return true;
     });
-    results.sort(function (a, b) { return b.score - a.score; });
-    return results.slice(0, 8).map(function (r) { return r.item; });
   }
 
-  /* ========== DOM 交互 ========== */
-  function escapeHtml(s) {
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  function normal(value) { return cleanText(value).toLowerCase(); }
+
+  function searchIndex(entries, query, filters) {
+    var tokens = normal(query).split(/\s+/).filter(Boolean);
+    return entries.map(function (entry, order) {
+      if (filters.type !== 'all' && entry.type !== filters.type) return null;
+      if (filters.direction !== 'all' && entry.direction !== filters.direction) return null;
+      if (filters.official && !entry.official) return null;
+      var title = normal(entry.title);
+      var tags = normal(entry.tags);
+      var desc = normal(entry.desc);
+      if (tokens.some(function (token) { return (title + ' ' + tags + ' ' + desc).indexOf(token) === -1; })) return null;
+      var score = tokens.length ? 0 : (entry.type === 'tool' ? 2 : 1);
+      tokens.forEach(function (token) {
+        if (title === token) score += 40;
+        else if (title.indexOf(token) === 0) score += 24;
+        else if (title.indexOf(token) !== -1) score += 15;
+        if (tags.indexOf(token) !== -1) score += 7;
+        if (desc.indexOf(token) !== -1) score += 3;
+      });
+      if (entry.official) score += 1;
+      return { entry: entry, score: score, order: order };
+    }).filter(Boolean).sort(function (a, b) { return b.score - a.score || a.order - b.order; }).slice(0, 14);
+  }
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  }
+
+  function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function highlight(value, query) {
+    var safe = escapeHtml(value);
+    var tokens = normal(query).split(/\s+/).filter(Boolean).sort(function (a, b) { return b.length - a.length; });
+    if (!tokens.length) return safe;
+    var pattern = tokens.map(function (token) { return escapeRegExp(escapeHtml(token)); }).join('|');
+    return safe.replace(new RegExp('(' + pattern + ')', 'gi'), '<mark>$1</mark>');
+  }
+
+  function loadHistory() {
+    try {
+      var value = JSON.parse(localStorage.getItem(HISTORY_KEY));
+      return Array.isArray(value) ? value.slice(0, 6) : [];
+    } catch (error) { return []; }
+  }
+
+  function saveHistory(query) {
+    var value = cleanText(query);
+    if (!value) return;
+    var history = loadHistory().filter(function (entry) { return entry !== value; });
+    history.unshift(value);
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 6))); } catch (error) { /* 本地存储不可用时忽略。 */ }
   }
 
   function init() {
@@ -244,95 +145,148 @@
     var panel = document.getElementById('searchPanel');
     var input = document.getElementById('searchInput');
     var results = document.getElementById('searchResults');
-    if (!toggle || !input || !results) return;
+    var discovery = document.getElementById('searchDiscovery');
+    var historyRow = document.getElementById('searchHistoryRow');
+    var historyContainer = document.getElementById('searchHistory');
+    var historyClear = document.getElementById('searchHistoryClear');
+    var typeFilters = document.getElementById('searchTypeFilters');
+    var directionFilters = document.getElementById('searchDirectionFilters');
+    if (!toggle || !panel || !input || !results || !historyRow || !historyContainer || !historyClear || !typeFilters || !directionFilters) return;
 
-    var isOpen = false;
+    var entries = dedupe(STATIC_INDEX.concat(buildDynamicIndex()));
+    var state = { type: 'all', direction: 'all', official: false, active: -1 };
+    historyContainer.classList.add('search-suggestion-list');
 
-    function open() {
-      isOpen = true;
+    function renderHistory() {
+      var history = loadHistory();
+      historyRow.hidden = history.length === 0;
+      historyContainer.innerHTML = history.map(function (value) {
+        return '<button type="button" data-search-suggestion="' + escapeHtml(value) + '">' + escapeHtml(value) + '</button>';
+      }).join('');
+    }
+
+    function filtersAreDefault() { return state.type === 'all' && state.direction === 'all' && !state.official; }
+
+    function render() {
+      var query = input.value.trim();
+      if (!query && filtersAreDefault()) {
+        results.classList.remove('show');
+        results.innerHTML = '';
+        discovery.hidden = false;
+        state.active = -1;
+        return;
+      }
+      discovery.hidden = true;
+      results.classList.add('show');
+      var matches = searchIndex(entries, query, state);
+      state.active = -1;
+      if (!matches.length) {
+        results.innerHTML = '<div class="search-empty">没有找到匹配内容。可以减少筛选条件，或换一个更短的关键词。</div>';
+        return;
+      }
+      results.innerHTML = matches.map(function (match) {
+        var entry = match.entry;
+        return '<a class="search-result-item" role="option" aria-selected="false" href="' + escapeHtml(entry.href) + '">' +
+          '<span class="search-result-meta"><span>' + escapeHtml(TYPE_LABELS[entry.type] || entry.type) + '</span>' +
+          '<span>' + escapeHtml(DIRECTION_LABELS[entry.direction] || entry.direction) + '</span>' +
+          (entry.official ? '<span class="official">官方来源</span>' : '') + '</span>' +
+          '<span class="sr-title">' + highlight(entry.title, query) + '</span>' +
+          '<span class="sr-desc">' + highlight(entry.desc, query) + '</span><span class="sr-go">→</span></a>';
+      }).join('');
+    }
+
+    function openPanel() {
       panel.classList.add('open');
       toggle.classList.add('active');
-      setTimeout(function () { input.focus(); }, 60);
+      toggle.setAttribute('aria-expanded', 'true');
+      input.focus();
+      renderHistory();
     }
 
-    function close() {
-      isOpen = false;
+    function closePanel() {
       panel.classList.remove('open');
       toggle.classList.remove('active');
-      results.classList.remove('show');
-      results.innerHTML = '';
-      input.value = '';
+      toggle.setAttribute('aria-expanded', 'false');
+      state.active = -1;
     }
 
-    toggle.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isOpen) close(); else open();
-    });
+    function chooseSuggestion(value) {
+      input.value = value;
+      saveHistory(value);
+      renderHistory();
+      render();
+      input.focus();
+    }
 
-    var debounceTimer;
-    input.addEventListener('input', function () {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(function () {
-        var q = input.value;
-        var hits = search(q);
-        renderResults(hits, q);
-      }, 120);
-    });
-
-    input.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { close(); return; }
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        var items = results.querySelectorAll('.search-result-item');
-        if (!items.length) return;
-        var current = results.querySelector('.search-result-item.active');
-        var idx = current ? Array.prototype.indexOf.call(items, current) : -1;
-        if (e.key === 'ArrowDown') idx = (idx + 1) % items.length;
-        else idx = (idx - 1 + items.length) % items.length;
-        for (var i = 0; i < items.length; i++) items[i].classList.remove('active');
-        items[idx].classList.add('active');
-        items[idx].scrollIntoView({ block: 'nearest' });
-      }
-      if (e.key === 'Enter') {
-        var active = results.querySelector('.search-result-item.active');
-        if (active) active.click();
-      }
-    });
-
-    document.addEventListener('click', function (e) {
-      if (isOpen && !panel.contains(e.target) && !toggle.contains(e.target)) {
-        close();
-      }
-    });
-
-    function renderResults(hits, query) {
-      results.innerHTML = '';
-      if (!query.trim()) {
-        results.classList.remove('show');
-        return;
-      }
-      results.classList.add('show');
-      if (!hits.length) {
-        results.innerHTML = '<div class="search-empty">未找到「' + escapeHtml(query) + '」相关内容，试试搜索：保研 / 考研 / 四六级 / 挂科 / 转专业</div>';
-        return;
-      }
-      var frag = document.createDocumentFragment();
-      hits.forEach(function (hit) {
-        var a = document.createElement('a');
-        a.className = 'search-result-item';
-        a.href = hit.href;
-        a.innerHTML =
-          '<span class="sr-title">' + escapeHtml(hit.title) + '</span>' +
-          (hit.desc ? '<span class="sr-desc">' + escapeHtml(hit.desc.slice(0, 72)) + '</span>' : '') +
-          '<span class="sr-go" aria-hidden="true">↗</span>';
-        a.addEventListener('click', function () { close(); });
-        frag.appendChild(a);
+    function updateActive(delta) {
+      var links = results.querySelectorAll('.search-result-item');
+      if (!links.length) return;
+      state.active = (state.active + delta + links.length) % links.length;
+      links.forEach(function (link, index) {
+        var active = index === state.active;
+        link.classList.toggle('active', active);
+        link.setAttribute('aria-selected', active ? 'true' : 'false');
       });
-      results.appendChild(frag);
+      links[state.active].scrollIntoView({ block: 'nearest' });
     }
+
+    toggle.addEventListener('click', function () { panel.classList.contains('open') ? closePanel() : openPanel(); });
+    input.addEventListener('input', render);
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowDown') { event.preventDefault(); updateActive(1); }
+      else if (event.key === 'ArrowUp') { event.preventDefault(); updateActive(-1); }
+      else if (event.key === 'Enter') {
+        var links = results.querySelectorAll('.search-result-item');
+        if (state.active >= 0 && links[state.active]) { event.preventDefault(); saveHistory(input.value); links[state.active].click(); }
+        else if (input.value.trim()) { saveHistory(input.value); renderHistory(); }
+      } else if (event.key === 'Escape') closePanel();
+    });
+
+    panel.addEventListener('click', function (event) {
+      var suggestion = event.target.closest('[data-search-suggestion]');
+      if (suggestion) chooseSuggestion(suggestion.dataset.searchSuggestion);
+      var result = event.target.closest('.search-result-item');
+      if (result) { saveHistory(input.value); closePanel(); }
+    });
+
+    typeFilters.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-search-type]');
+      if (!button) return;
+      state.type = button.dataset.searchType;
+      typeFilters.querySelectorAll('[data-search-type]').forEach(function (candidate) { candidate.classList.toggle('active', candidate === button); });
+      render();
+    });
+
+    directionFilters.addEventListener('click', function (event) {
+      var direction = event.target.closest('[data-search-direction]');
+      var official = event.target.closest('[data-search-official]');
+      if (direction) {
+        state.direction = direction.dataset.searchDirection;
+        directionFilters.querySelectorAll('[data-search-direction]').forEach(function (candidate) { candidate.classList.toggle('active', candidate === direction); });
+      }
+      if (official) {
+        state.official = !state.official;
+        official.classList.toggle('active', state.official);
+        official.setAttribute('aria-pressed', state.official ? 'true' : 'false');
+      }
+      render();
+    });
+
+    historyClear.addEventListener('click', function () {
+      try { localStorage.removeItem(HISTORY_KEY); } catch (error) { /* 忽略。 */ }
+      renderHistory();
+    });
+
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest('.search-wrap')) closePanel();
+    });
+    renderHistory();
   }
 
-  /* ========== 暴露 ========== */
-  window.SiteSearch = { init: init, search: search };
+  window.SiteSearch = {
+    init: init,
+    search: function (query, filters) {
+      return searchIndex(dedupe(STATIC_INDEX.concat(buildDynamicIndex())), query || '', Object.assign({ type: 'all', direction: 'all', official: false }, filters || {}));
+    }
+  };
 })();

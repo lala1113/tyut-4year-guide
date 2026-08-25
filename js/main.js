@@ -37,7 +37,9 @@
   }
 
   /* ---------- 滚动导航高亮（scrollspy） ---------- */
-  var sections = document.querySelectorAll('section[id]');
+  var sections = Array.prototype.filter.call(document.querySelectorAll('section[id]'), function (section) {
+    return !section.hidden && !section.classList.contains('resource-source-section');
+  });
   var navLinks = document.querySelectorAll('.main-nav .nav-link');
 
   var spy = function () {
@@ -56,7 +58,7 @@
   spy();
 
   /* ---------- 入场动画（IntersectionObserver，渐进式呈现） ---------- */
-  var animEls = document.querySelectorAll('.tl-item, .exp-card, .quote-card, .video-card, .hero-card');
+  var animEls = document.querySelectorAll('.tl-item, .exp-card, .quote-card, .video-card, .hero-card, .verification-card, .month-task, .promotion-stat, .school-card, .resource-hub-card');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {

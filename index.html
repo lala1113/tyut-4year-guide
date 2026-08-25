@@ -6,7 +6,7 @@
 <meta name="description" content="太原理工大学大学四年生涯规划指南——面向太原理工在校本科生的公益信息站,按保研/考研/考公/直接就业四大去向,指导四年各阶段准备。">
 <title>太原理工大学 · 四年生涯规划指南</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23005BAC'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='Georgia,serif' font-weight='bold'%3E%E7%90%86%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=3.1.0">
 <!-- Markdown 渲染引擎（CDN；离线打开时自动降级为原文显示） -->
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
@@ -32,18 +32,23 @@
 
     <nav class="main-nav" id="mainNav" aria-label="主导航">
       <a href="#home" class="nav-link">首页</a>
+      <a href="#action-center" class="nav-link">行动中心</a>
       <a href="#foundation" class="nav-link">基础篇</a>
       <a href="#baoyan" class="nav-link">保研</a>
+      <a href="#promotion" class="nav-link">推免去向</a>
       <a href="#kaoyan" class="nav-link">考研</a>
       <a href="#kaogong" class="nav-link">考公</a>
       <a href="#jiuye" class="nav-link">就业</a>
-      <a href="#seniors" class="nav-link">学长学姐说</a>
-      <a href="#videos" class="nav-link">视频资源</a>
-      <a href="#resources" class="nav-link">资料下载</a>
+      <a href="#resource-hub" class="nav-link">资源中心</a>
       <a href="#contact" class="nav-link">联系作者</a>
     </nav>
 
     <div class="header-actions">
+      <button type="button" class="update-log-toggle" id="updateLogToggle" aria-label="查看网站更新日志" aria-haspopup="dialog" aria-controls="updateLogDialog" aria-expanded="false">
+        <span class="update-log-toggle-icon" aria-hidden="true">↻</span>
+        <span class="update-log-toggle-label">更新日志</span>
+        <span class="update-log-unread" aria-hidden="true"></span>
+      </button>
       <!-- 站内搜索 -->
       <div class="search-wrap">
         <button class="search-toggle" id="searchToggle" aria-label="搜索本站内容" aria-expanded="false">
@@ -51,6 +56,39 @@
         </button>
         <div class="search-panel" id="searchPanel">
           <input type="text" id="searchInput" class="search-input" placeholder="搜索：保研 / 考研 / 四六级 / 挂科 / 转专业…" autocomplete="off" aria-label="站内搜索输入框">
+          <div class="search-filter-group" id="searchTypeFilters" aria-label="按内容类型筛选">
+            <button type="button" class="search-filter active" data-search-type="all">全部</button>
+            <button type="button" class="search-filter" data-search-type="policy">政策</button>
+            <button type="button" class="search-filter" data-search-type="experience">经验</button>
+            <button type="button" class="search-filter" data-search-type="video">视频</button>
+            <button type="button" class="search-filter" data-search-type="resource">资料</button>
+            <button type="button" class="search-filter" data-search-type="tool">工具</button>
+          </div>
+          <div class="search-filter-group search-filter-group--secondary" id="searchDirectionFilters" aria-label="按发展方向筛选">
+            <button type="button" class="search-filter active" data-search-direction="all">全方向</button>
+            <button type="button" class="search-filter" data-search-direction="foundation">基础</button>
+            <button type="button" class="search-filter" data-search-direction="baoyan">保研</button>
+            <button type="button" class="search-filter" data-search-direction="kaoyan">考研</button>
+            <button type="button" class="search-filter" data-search-direction="kaogong">考公</button>
+            <button type="button" class="search-filter" data-search-direction="jiuye">就业</button>
+            <button type="button" class="search-filter" data-search-official="true">只看官方</button>
+          </div>
+          <div class="search-discovery" id="searchDiscovery">
+            <div class="search-discovery-row">
+              <span>热门搜索</span>
+              <div class="search-suggestion-list">
+                <button type="button" data-search-suggestion="2026届推免去向">2026届推免去向</button>
+                <button type="button" data-search-suggestion="保研资格">保研资格</button>
+                <button type="button" data-search-suggestion="考研择校">考研择校</button>
+                <button type="button" data-search-suggestion="选调生">选调生</button>
+              </div>
+            </div>
+            <div class="search-discovery-row" id="searchHistoryRow" hidden>
+              <span>最近搜索</span>
+              <div id="searchHistory"></div>
+              <button type="button" class="search-history-clear" id="searchHistoryClear">清除</button>
+            </div>
+          </div>
           <div class="search-results" id="searchResults" role="listbox"></div>
         </div>
       </div>
@@ -60,6 +98,7 @@
     </div>
   </div>
 </header>
+<div class="reading-progress" aria-hidden="true"><span id="readingProgressBar"></span></div>
 
 <!-- ======================= Hero 首屏 ======================= -->
 <section class="hero" id="home">
@@ -69,12 +108,12 @@
     <div class="hero-glow hero-glow-2"></div>
   </div>
   <div class="hero-inner">
-    <p class="hero-kicker">太原理工大学 · 本科生公益规划站 · 内容来自公开渠道</p>
+    <p class="hero-kicker">太原理工大学 · 本科生公益规划站 · 非官方学生整理</p>
     <h1 class="hero-title">四年之后，<br>你想<span class="hl-orange">去哪里</span>？</h1>
     <p class="hero-sub">从明向湖畔到更高更远的地方——保研、考研、考公、直接就业，<br class="br-lg">四条路都有太原理工人的脚印。我们把官方政策与学长学姐的真实经验，按年级整理成一条清晰的路。</p>
     <div class="hero-cta">
-      <a href="#baoyan" class="btn btn-primary">开始规划 <span aria-hidden="true">→</span></a>
-      <a href="#seniors" class="btn btn-ghost">听听学长学姐怎么说</a>
+      <a href="#action-center" class="btn btn-primary">开始本月计划 <span aria-hidden="true">→</span></a>
+      <a href="#resource-hub" class="btn btn-ghost">查看经验与资源</a>
     </div>
 
     <div class="hero-cards">
@@ -117,6 +156,74 @@
     <div class="metric"><strong>211 / 双一流</strong><span>国家“211工程”与“双一流”建设高校</span></div>
     <div class="metric"><strong>35.92%</strong><span>2025届本科毕业生升学率</span></div>
     <div class="metric"><strong>87.08%</strong><span>2025届应届本科毕业生毕业去向落实率</span></div>
+  </div>
+</section>
+
+<!-- ======================= 本月行动中心 ======================= -->
+<section class="action-center" id="action-center">
+  <div class="section-head">
+    <span class="section-index">NOW</span>
+    <h2 class="serif">本月行动中心</h2>
+    <p class="section-desc">先选择年级，再把当前月份最重要的三件事加入待办。所有进度只保存在当前浏览器，不上传、不注册。</p>
+  </div>
+  <div class="action-shell">
+    <div class="action-hero">
+      <div>
+        <span class="action-eyebrow" id="actionMonthLabel">本月建议</span>
+        <h3 class="serif" id="actionStageTitle">选择你的当前阶段</h3>
+        <p id="actionStageDesc">系统会按“年级 × 月份”给出可执行建议。</p>
+      </div>
+      <div class="action-progress-card" aria-live="polite">
+        <span>待办完成度</span>
+        <strong id="actionProgressText">0 / 0</strong>
+        <div class="action-progress-track"><span id="actionProgressBar"></span></div>
+      </div>
+    </div>
+    <div class="grade-switcher" id="gradeSwitcher" aria-label="选择当前年级">
+      <button type="button" data-grade="0">大一</button>
+      <button type="button" data-grade="1">大二</button>
+      <button type="button" data-grade="2">大三</button>
+      <button type="button" data-grade="3">大四</button>
+    </div>
+    <div class="action-grid">
+      <div class="action-panel">
+        <div class="panel-head">
+          <div><span>今天先做什么</span><h3>本月重点任务</h3></div>
+          <button type="button" class="text-button" id="addAllMonthTasks">全部加入待办</button>
+        </div>
+        <div class="month-task-list" id="monthTaskList"></div>
+      </div>
+      <div class="action-panel">
+        <div class="panel-head">
+          <div><span>我的学习空间</span><h3>本地待办</h3></div>
+          <span class="privacy-chip">仅保存在本机</span>
+        </div>
+        <form class="todo-form" id="todoForm">
+          <input id="todoInput" maxlength="80" placeholder="添加一项自己的任务" aria-label="添加自定义待办">
+          <button type="submit">添加</button>
+        </form>
+        <div class="todo-list" id="todoList" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="saved-section-row" id="savedSectionRow" hidden>
+      <strong>已收藏板块</strong>
+      <div id="savedSectionList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 六题方向探索 ======================= -->
+<section class="assessment-section" id="assessment">
+  <div class="assessment-shell">
+    <div class="assessment-intro">
+      <span class="assessment-kicker">6 题方向探索</span>
+      <h2 class="serif">暂时没想好走哪条路？</h2>
+      <p>用六个选择了解你当前更匹配的准备方式，结果会指向保研、考研、考公或就业板块，并给出三项下一步行动。</p>
+      <p class="assessment-disclaimer">这是规划导航工具，不是心理测评或职业资格结论；方向随经历变化，建议定期重新评估。</p>
+    </div>
+    <div class="assessment-card" id="assessmentCard">
+      <button type="button" class="assessment-start" id="assessmentStart">开始方向探索 <span aria-hidden="true">→</span></button>
+    </div>
   </div>
 </section>
 
@@ -359,6 +466,56 @@
   </div>
 </section>
 
+<!-- ======================= 2026届推免去向查询 ======================= -->
+<section class="promotion-section" id="promotion">
+  <div class="promotion-hero">
+    <div>
+      <span class="promotion-kicker">保研 · 匿名汇总数据</span>
+      <h2 class="serif">2026届推免去向查询</h2>
+      <p>按学院、专业和去向院校查询公开推免喜报的匿名汇总结果。这里只展示人数统计，不展示学生姓名。</p>
+    </div>
+    <div class="promotion-hero-note">非官方发布 · 申请前请回到学校或学院公示核验</div>
+  </div>
+  <div class="promotion-stats" aria-label="推免去向数据概览">
+    <div class="promotion-stat"><strong id="promotionTotal">—</strong><span>匿名记录</span></div>
+    <div class="promotion-stat"><strong id="promotionCollegeCount">—</strong><span>学院</span></div>
+    <div class="promotion-stat"><strong id="promotionMajorCount">—</strong><span>专业口径</span></div>
+    <div class="promotion-stat"><strong id="promotionUniversityCount">—</strong><span>去向院校</span></div>
+  </div>
+  <div class="promotion-workspace">
+    <div class="promotion-controls" aria-label="筛选推免去向数据">
+      <label>学院
+        <select id="promotionCollege"><option value="all">全部学院</option></select>
+      </label>
+      <label>专业
+        <select id="promotionMajor"><option value="all">全部专业</option></select>
+      </label>
+      <label class="promotion-search-label">搜索去向院校
+        <input id="promotionQuery" type="search" placeholder="例如：浙江大学 / 太原理工大学">
+      </label>
+      <label>排序
+        <select id="promotionSort">
+          <option value="count">按人数从高到低</option>
+          <option value="college">按学院与专业</option>
+          <option value="university">按去向院校</option>
+        </select>
+      </label>
+    </div>
+    <div class="promotion-summary-row">
+      <p id="promotionResultSummary">正在载入匿名汇总数据…</p>
+      <button type="button" class="text-button" id="promotionReset">重置筛选</button>
+    </div>
+    <div class="promotion-top" id="promotionTop"></div>
+    <div class="promotion-table-wrap">
+      <table class="promotion-table">
+        <thead><tr><th>学院</th><th>专业</th><th>去向院校</th><th>人数</th></tr></thead>
+        <tbody id="promotionTableBody"></tbody>
+      </table>
+      <div class="promotion-empty" id="promotionEmpty" hidden>没有找到匹配结果，请缩短关键词或重置筛选。</div>
+    </div>
+  </div>
+</section>
+
 <!-- ======================= 考研板块 ======================= -->
 <section class="direction alt" id="kaoyan">
   <div class="section-head">
@@ -464,6 +621,26 @@
       <p class="exp-meta"><b>太原理工建工学院考生</b> · 结构力学方向</p>
       <span class="exp-src">来源：公开考研经验帖（硕都教育转载）</span>
     </article>
+  </div>
+
+  <div class="school-compare" id="school-compare">
+    <div class="school-compare-head">
+      <div>
+        <span class="tool-kicker">本地工具 · 择校对比</span>
+        <h3 class="serif">用同一组字段比较 3—6 所目标院校</h3>
+        <p>记录专业、考试科目、目标分数和信息来源。数据仅保存在当前浏览器，招生人数与报录比请注明年份。</p>
+      </div>
+      <button type="button" id="schoolFormToggle">＋ 添加目标院校</button>
+    </div>
+    <form class="school-form" id="schoolForm" hidden>
+      <label>院校名称<input name="name" required maxlength="30" placeholder="例如：太原理工大学"></label>
+      <label>专业名称或代码<input name="major" required maxlength="40" placeholder="例如：材料工程 085601"></label>
+      <label>考试科目<input name="subjects" maxlength="80" placeholder="政治 / 英语 / 数学 / 专业课"></label>
+      <label>目标分数<input name="targetScore" type="number" min="0" max="500" placeholder="例如：360"></label>
+      <label class="school-form-wide">年份、来源与备注<textarea name="note" maxlength="180" placeholder="例如：2027招生目录；来源：目标院校研究生院官网"></textarea></label>
+      <div class="school-form-actions"><button type="button" id="schoolFormCancel">取消</button><button type="submit">保存院校</button></div>
+    </form>
+    <div class="school-list" id="schoolList" aria-live="polite"></div>
   </div>
 
   <h3 class="block-title full"><span class="tick">◆</span> 相关视频链接</h3>
@@ -728,8 +905,35 @@
   </div>
 </section>
 
+<!-- ======================= 统一资源中心 ======================= -->
+<section class="resource-hub" id="resource-hub">
+  <div class="section-head">
+    <span class="section-index">05</span>
+    <h2 class="serif">经验与资源中心</h2>
+    <p class="section-desc">把学长学姐经验、视频和可打印资料放在同一个入口，并按发展方向筛选。所有外部内容都保留原始来源。</p>
+  </div>
+  <div class="resource-hub-toolbar">
+    <div class="resource-tabs" id="resourceTabs" role="tablist" aria-label="选择资源类型">
+      <button type="button" role="tab" aria-selected="true" class="active" data-resource-tab="stories">经验</button>
+      <button type="button" role="tab" aria-selected="false" data-resource-tab="videos">视频</button>
+      <button type="button" role="tab" aria-selected="false" data-resource-tab="files">资料</button>
+    </div>
+    <div class="resource-filters" id="resourceFilters" aria-label="按发展方向筛选">
+      <button type="button" class="active" data-resource-filter="all">全部</button>
+      <button type="button" data-resource-filter="baoyan">保研</button>
+      <button type="button" data-resource-filter="kaoyan">考研</button>
+      <button type="button" data-resource-filter="kaogong">考公</button>
+      <button type="button" data-resource-filter="jiuye">就业</button>
+      <button type="button" data-resource-filter="campus">校园</button>
+    </div>
+  </div>
+  <div class="resource-result-meta"><span id="resourceResultCount">正在整理资源…</span><span>点击卡片打开原始来源或本站资料</span></div>
+  <div class="resource-hub-grid" id="resourceHubGrid"></div>
+  <div class="resource-hub-empty" id="resourceHubEmpty" hidden>当前筛选下暂时没有内容。</div>
+</section>
+
 <!-- ======================= 学长学姐说 ======================= -->
-<section class="seniors" id="seniors">
+<section class="seniors resource-source-section" id="seniors">
   <div class="section-head light">
     <span class="section-index">05</span>
     <h2 class="serif">学长学姐说</h2>
@@ -812,7 +1016,7 @@
 </section>
 
 <!-- ======================= 视频资源专区 ======================= -->
-<section class="videos" id="videos">
+<section class="videos resource-source-section" id="videos">
   <div class="section-head">
     <span class="section-index">06</span>
     <h2 class="serif">视频资源专区</h2>
@@ -897,7 +1101,7 @@
 </section>
 
 <!-- ======================= 资料下载区 ======================= -->
-<section class="direction" id="resources">
+<section class="direction resource-source-section" id="resources">
   <div class="section-head">
     <span class="section-index">★</span>
     <h2 class="serif">资料下载</h2>
@@ -1006,9 +1210,95 @@
   </div>
 </footer>
 
+<!-- ======================= 网站更新日志 ======================= -->
+<div class="update-log-dialog" id="updateLogDialog" hidden>
+  <div class="update-log-panel" role="dialog" aria-modal="true" aria-labelledby="updateLogTitle" aria-describedby="updateLogDesc" tabindex="-1">
+    <header class="update-log-head">
+      <div>
+        <span class="update-log-kicker">WHAT'S NEW</span>
+        <h2 class="serif" id="updateLogTitle">网站更新日志</h2>
+        <p id="updateLogDesc">记录影响使用方式、数据口径和内容可信度的重要变化。</p>
+      </div>
+      <button type="button" class="update-log-close" id="updateLogClose" aria-label="关闭更新日志">×</button>
+    </header>
+
+    <div class="update-log-latest">
+      <span>当前版本</span>
+      <strong>v3.1.0</strong>
+      <em>2026-08-25 更新</em>
+    </div>
+
+    <ol class="update-log-list">
+      <li class="update-log-entry is-latest">
+        <div class="update-log-marker" aria-hidden="true"></div>
+        <article>
+          <div class="update-log-meta"><strong>v3.1.0</strong><time datetime="2026-08-25">2026-08-25</time><span>使用体验</span></div>
+          <h3>新增网站更新日志</h3>
+          <ul>
+            <li>右上角新增更新日志入口，集中说明最近新增和调整的内容。</li>
+            <li>新版本未读时显示提示点，查看后只在当前浏览器标记为已读。</li>
+            <li>每次重要更新同时提供使用建议，帮助同学快速找到最值得关注的功能。</li>
+          </ul>
+          <p class="update-log-tip"><b>怎么用：</b>看到右上角提示点时打开日志，先看带“最新”标记的条目。</p>
+        </article>
+      </li>
+
+      <li class="update-log-entry">
+        <div class="update-log-marker" aria-hidden="true"></div>
+        <article>
+          <div class="update-log-meta"><strong>v3.0.0</strong><time datetime="2026-08-25">2026-08-25</time><span>规划工具升级</span></div>
+          <h3>从资料库升级为可执行的规划工具</h3>
+          <ul>
+            <li>新增内容核验卡，标注最后更新、适用范围、来源、状态和风险提醒。</li>
+            <li>新增 2026 届推免去向查询，提供 800 条匿名汇总记录的学院、专业和院校筛选。</li>
+            <li>新增本月行动中心、六题方向探索和考研择校对比，数据仅保存在本机。</li>
+            <li>整合经验、视频和资料中心，并升级站内搜索、板块目录、收藏和阅读进度。</li>
+          </ul>
+          <p class="update-log-tip"><b>推荐用法：</b>先在“行动中心”选择年级；方向不明确时完成六题探索；看到政策数字时优先检查核验卡。</p>
+        </article>
+      </li>
+
+      <li class="update-log-entry">
+        <div class="update-log-marker" aria-hidden="true"></div>
+        <article>
+          <div class="update-log-meta"><strong>v2.0.1</strong><time datetime="2026-08-22">2026-08-22</time><span>访问入口</span></div>
+          <h3>更新线上地址与联系二维码</h3>
+          <ul>
+            <li>网站线上入口切换到 GitHub Pages，方便直接访问和分享。</li>
+            <li>同步更新联系作者区域二维码。</li>
+          </ul>
+        </article>
+      </li>
+
+      <li class="update-log-entry">
+        <div class="update-log-marker" aria-hidden="true"></div>
+        <article>
+          <div class="update-log-meta"><strong>v2.0.0</strong><time datetime="2026-08-19">2026-08-19</time><span>首个公开版本</span></div>
+          <h3>四年生涯规划指南上线</h3>
+          <ul>
+            <li>上线基础篇、保研、考研、考公和就业五个核心板块。</li>
+            <li>整理四年时间线、公开政策入口、经验分享、视频和资料下载。</li>
+            <li>提供首版站内全文搜索。</li>
+          </ul>
+        </article>
+      </li>
+    </ol>
+
+    <footer class="update-log-foot">
+      <p>日志只记录会影响同学使用的重要变化；文字勘误等小调整不单独占用一条版本记录。</p>
+      <a href="#action-center" data-update-log-link>从本月行动中心开始 →</a>
+    </footer>
+  </div>
+</div>
+
+<button type="button" class="back-top" id="backTop" aria-label="返回页面顶部">↑</button>
+
 <script src="js/content.js"></script>
 <script src="js/md-render.js"></script>
-<script src="js/search.js"></script>
-<script src="js/main.js"></script>
+<script src="js/promotion-data.js?v=3.0.0"></script>
+<script src="js/features.js?v=3.0.0"></script>
+<script src="js/search.js?v=3.0.0"></script>
+<script src="js/changelog.js?v=3.1.0"></script>
+<script src="js/main.js?v=3.0.0"></script>
 </body>
 </html>
