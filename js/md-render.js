@@ -57,13 +57,13 @@
       .filter(Boolean);
 
     var out = '';
-    blocks.forEach(function (block) {
+    blocks.forEach(function (block, index) {
       var lines = block.split('\n');
       var titleLine = lines.shift().trim();
       var isHl = /\|\s*highlight\s*$/i.test(titleLine);
       var title = titleLine.replace(/\s*\|\s*highlight\s*$/i, '').trim();
       var body = renderMarkdown(lines.join('\n'));
-      out += '<div class="policy-item' + (isHl ? ' highlight' : '') + '">' +
+      out += '<div class="policy-item' + (isHl ? ' highlight' : '') + '" id="' + escapeHtml(key) + '-policy-' + (index + 1) + '">' +
              '<h4>' + escapeHtml(title) + '</h4>' +
              '<div class="md-body">' + body + '</div></div>';
     });
@@ -130,6 +130,10 @@
       Object.keys(window.MARKDOWN_CONTENT).forEach(renderPolicyList);
     }
     renderContestCatalog();
+    if (window.location.hash) {
+      var target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+      if (target) window.requestAnimationFrame(function () { target.scrollIntoView({ block: 'start' }); });
+    }
   }
 
   if (document.readyState === 'loading') {

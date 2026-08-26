@@ -78,10 +78,15 @@
       var section = document.getElementById(sectionId);
       if (!section || section.querySelector(':scope > .verification-card')) return;
       var config = VERIFICATION_CONFIG[sectionId];
+      var updated = new Date(config.updatedAt + 'T00:00:00');
+      var reviewEvery = config.official ? 120 : 90;
+      var reviewAt = new Date(updated.getTime() + reviewEvery * 86400000);
+      var needsReview = Date.now() > reviewAt.getTime();
+      var reviewLabel = needsReview ? '已到复核时间' : '建议于 ' + reviewAt.toISOString().slice(0, 10) + ' 前复核';
       var anchor = section.querySelector('.section-head, .promotion-hero');
       if (!anchor) return;
       var card = document.createElement('aside');
-      card.className = 'verification-card';
+      card.className = 'verification-card' + (needsReview ? ' needs-review' : '');
       card.setAttribute('aria-label', '内容核验信息');
       card.innerHTML =
         '<div class="verification-card__head">' +
@@ -94,6 +99,7 @@
           '<div><span>最后更新</span><b>' + escapeHtml(config.updatedAt) + '</b></div>' +
           '<div><span>适用范围</span><b>' + escapeHtml(config.applicable) + '</b></div>' +
           '<div><span>信息来源</span><b>' + escapeHtml(config.source) + '</b></div>' +
+          '<div><span>复核提醒</span><b>' + escapeHtml(reviewLabel) + '</b></div>' +
         '</div>' +
         '<p>' + escapeHtml(config.warning) + '</p>';
       anchor.insertAdjacentElement('afterend', card);
@@ -450,6 +456,8 @@
     var tableBody = document.getElementById('promotionTableBody');
     var topContainer = document.getElementById('promotionTop');
     var empty = document.getElementById('promotionEmpty');
+    var exportButton = document.getElementById('promotionExport');
+    var currentRows = [];
 
     document.getElementById('promotionTotal').textContent = data.meta.total;
     document.getElementById('promotionCollegeCount').textContent = data.meta.collegeCount;
@@ -530,6 +538,7 @@
       if (sortSelect.value === 'count') rows.sort(function (a, b) { return b.count - a.count || a.university.localeCompare(b.university, 'zh-CN'); });
       if (sortSelect.value === 'college') rows.sort(function (a, b) { return a.college.localeCompare(b.college, 'zh-CN') || a.major.localeCompare(b.major, 'zh-CN') || b.count - a.count; });
       if (sortSelect.value === 'university') rows.sort(function (a, b) { return a.university.localeCompare(b.university, 'zh-CN') || b.count - a.count; });
+      currentRows = rows.slice();
 
       var people = rows.reduce(function (total, row) { return total + row.count; }, 0);
       document.getElementById('promotionResultSummary').textContent = '找到 ' + rows.length + ' 组“专业—去向院校”记录，共 ' + people + ' 人次。';
@@ -551,6 +560,22 @@
     majorSelect.addEventListener('change', render);
     queryInput.addEventListener('input', render);
     sortSelect.addEventListener('change', render);
+    if (exportButton) exportButton.addEventListener('click', function () {
+      var lines = [['学院', '专业', '去向院校', '人数']].concat(currentRows.map(function (row) {
+        return [row.college, row.major, row.university, row.count];
+      }));
+      var csv = '\uFEFF' + lines.map(function (line) {
+        return line.map(function (value) { return '"' + String(value).replace(/"/g, '""') + '"'; }).join(',');
+      }).join('\r\n');
+      var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = '2026届推免去向_当前筛选.csv';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    });
     document.getElementById('promotionReset').addEventListener('click', function () {
       collegeSelect.value = 'all';
       updateMajorOptions();
@@ -677,10 +702,47 @@
     var filters = document.getElementById('resourceFilters');
     if (!grid || !tabs || !filters) return;
     var templates = { stories: [], videos: [], files: [] };
-    document.querySelectorAll('#seniors .quote-card').forEach(function (node) { templates.stories.push({ node: node.cloneNode(true), direction: classifyResource(node.textContent) }); });
-    document.querySelectorAll('#videos .video-card').forEach(function (node) { templates.videos.push({ node: node.cloneNode(true), direction: classifyResource(node.textContent) }); });
-    document.querySelectorAll('#resources .resource-card').forEach(function (node) { templates.files.push({ node: node.cloneNode(true), direction: classifyResource(node.textContent) }); });
+    var resourceFavorites = loadLocal('resourceFavorites', []);
+    var recentResources = loadLocal('recentResources', []);
+    if (!Array.isArray(resourceFavorites)) resourceFavorites = [];
+    if (!Array.isArray(recentResources)) recentResources = [];
+
+    function resourceTitle(node) {
+      var heading = node.querySelector('h4, .quote-who, .exp-meta, .video-body h4');
+      return (heading ? heading.textContent : node.textContent).replace(/\s+/g, ' ').trim().slice(0, 72);
+    }
+
+    function collect(selector, tab) {
+      document.querySelectorAll(selector).forEach(function (node, index) {
+        var direction = classifyResource(node.textContent);
+        templates[tab].push({
+          id: tab + '-' + (index + 1), node: node.cloneNode(true), direction: direction,
+          title: resourceTitle(node), href: node.getAttribute('href') || ('resources.html?tab=' + tab + '#resource-hub'), tab: tab
+        });
+      });
+    }
+
+    collect('#seniors .quote-card', 'stories');
+    collect('#videos .video-card', 'videos');
+    collect('#resources .resource-card', 'files');
     var state = { tab: 'stories', filter: 'all' };
+
+    var personal = document.createElement('aside');
+    personal.className = 'resource-personal';
+    personal.id = 'resourcePersonal';
+    grid.insertAdjacentElement('beforebegin', personal);
+
+    function resourceLink(item) {
+      var external = /^https?:/i.test(item.href);
+      return '<a href="' + escapeHtml(item.href) + '"' + (external ? ' target="_blank" rel="noopener"' : '') + '>' + escapeHtml(item.title) + '</a>';
+    }
+
+    function renderPersonal() {
+      personal.innerHTML = '<div><strong>我的资源收藏</strong><span>' + resourceFavorites.length + ' 条</span><div class="resource-personal-links">' +
+        (resourceFavorites.length ? resourceFavorites.slice(0, 4).map(resourceLink).join('') : '<em>点击资源卡片右上角的 ☆ 即可收藏</em>') +
+        '</div></div><div><strong>最近浏览</strong><span>' + recentResources.length + ' 条</span><div class="resource-personal-links">' +
+        (recentResources.length ? recentResources.slice(0, 4).map(resourceLink).join('') : '<em>打开视频或资料后会显示在这里</em>') + '</div></div>';
+    }
 
     function render() {
       var items = templates[state.tab].filter(function (item) { return state.filter === 'all' || item.direction === state.filter; });
@@ -690,7 +752,22 @@
         var clone = item.node.cloneNode(true);
         clone.classList.add('resource-hub-card');
         clone.dataset.direction = item.direction;
-        grid.appendChild(clone);
+        var wrapper = document.createElement('div');
+        wrapper.className = 'resource-hub-card-wrap';
+        wrapper.dataset.resourceId = item.id;
+        wrapper.dataset.resourceTitle = item.title;
+        wrapper.dataset.resourceHref = item.href;
+        wrapper.dataset.resourceTab = item.tab;
+        wrapper.appendChild(clone);
+        var favorite = document.createElement('button');
+        var active = resourceFavorites.some(function (saved) { return saved.id === item.id; });
+        favorite.type = 'button';
+        favorite.className = 'resource-item-favorite' + (active ? ' active' : '');
+        favorite.dataset.resourceFavorite = item.id;
+        favorite.setAttribute('aria-label', active ? '取消收藏' + item.title : '收藏' + item.title);
+        favorite.textContent = active ? '★' : '☆';
+        wrapper.appendChild(favorite);
+        grid.appendChild(wrapper);
       });
       document.getElementById('resourceResultCount').textContent = '找到 ' + items.length + ' 条相关内容';
       document.getElementById('resourceHubEmpty').hidden = items.length !== 0;
@@ -702,6 +779,7 @@
       filters.querySelectorAll('button').forEach(function (button) {
         button.classList.toggle('active', button.dataset.resourceFilter === state.filter);
       });
+      renderPersonal();
     }
 
     tabs.addEventListener('click', function (event) {
@@ -718,6 +796,25 @@
       render();
     });
 
+    grid.addEventListener('click', function (event) {
+      var wrapper = event.target.closest('.resource-hub-card-wrap');
+      if (!wrapper) return;
+      var item = { id: wrapper.dataset.resourceId, title: wrapper.dataset.resourceTitle, href: wrapper.dataset.resourceHref, tab: wrapper.dataset.resourceTab };
+      var favorite = event.target.closest('[data-resource-favorite]');
+      if (favorite) {
+        var exists = resourceFavorites.some(function (saved) { return saved.id === item.id; });
+        resourceFavorites = exists ? resourceFavorites.filter(function (saved) { return saved.id !== item.id; }) : [item].concat(resourceFavorites).slice(0, 30);
+        saveLocal('resourceFavorites', resourceFavorites);
+        render();
+        return;
+      }
+      if (event.target.closest('a')) {
+        recentResources = [item].concat(recentResources.filter(function (saved) { return saved.id !== item.id; })).slice(0, 12);
+        saveLocal('recentResources', recentResources);
+        renderPersonal();
+      }
+    });
+
     document.querySelectorAll('.resource-source-section').forEach(function (section) {
       section.hidden = true;
       section.setAttribute('aria-hidden', 'true');
@@ -727,8 +824,10 @@
 
     function routeLegacyHash() {
       var map = { '#seniors': 'stories', '#videos': 'videos', '#resources': 'files' };
-      if (!map[location.hash]) return;
-      state.tab = map[location.hash];
+      var requestedTab = new URLSearchParams(location.search).get('tab');
+      if (['stories', 'videos', 'files'].indexOf(requestedTab) !== -1) state.tab = requestedTab;
+      else if (map[location.hash]) state.tab = map[location.hash];
+      else return;
       state.filter = 'all';
       render();
       setTimeout(function () { document.getElementById('resource-hub').scrollIntoView(); }, 0);
@@ -741,6 +840,11 @@
   var FAVORITE_SECTIONS = {
     foundation: '基础篇 · 学业基石', baoyan: '保研 · 推免', kaoyan: '考研 · 统考',
     kaogong: '考公 · 选调', jiuye: '直接就业', promotion: '2026届推免去向', 'resource-hub': '经验与资源中心'
+  };
+  var FAVORITE_SECTION_LINKS = {
+    foundation: 'foundation.html#foundation', baoyan: 'baoyan.html#baoyan', kaoyan: 'kaoyan.html#kaoyan',
+    kaogong: 'kaogong.html#kaogong', jiuye: 'jiuye.html#jiuye', promotion: 'promotion-destinations.html#promotion',
+    'resource-hub': 'resources.html#resource-hub'
   };
 
   function getFavorites() {
@@ -755,7 +859,7 @@
     var favorites = getFavorites();
     row.hidden = favorites.length === 0;
     list.innerHTML = favorites.map(function (id) {
-      return '<a href="#' + escapeHtml(id) + '">' + escapeHtml(FAVORITE_SECTIONS[id] || id) + '</a>';
+      return '<a href="' + escapeHtml(FAVORITE_SECTION_LINKS[id] || ('#' + id)) + '">' + escapeHtml(FAVORITE_SECTIONS[id] || id) + '</a>';
     }).join('');
   }
 

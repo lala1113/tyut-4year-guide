@@ -26,7 +26,7 @@
     item('直接就业路径', '实习、简历、秋招、春招、面试与签约事项。', 'jiuye.html#jiuye', 'policy', 'jiuye', true, '就业 求职 实习 简历 秋招 春招 offer 三方协议'),
     item('经验与资源中心', '统一查找学长学姐经验、视频与可打印资料，并按方向筛选。', 'resources.html#resource-hub', 'resource', 'all', false, '资源中心 经验 视频 资料 下载 校园'),
     item('联系作者', '反馈内容错误、补充经验或提出功能建议。', 'index.html#contact', 'resource', 'campus', false, '联系 反馈 作者 勘误 建议')
-  ];
+  ].concat(window.TYUT_SEARCH_INDEX || []);
 
   function item(title, desc, href, type, direction, official, tags) {
     return { title: title, desc: desc, href: href, type: type, direction: direction, official: official, tags: tags || '' };

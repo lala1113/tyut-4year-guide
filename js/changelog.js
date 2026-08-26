@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '4.0.0';
+  var CURRENT_VERSION = '4.1.0';
   var STORAGE_KEY = 'tyutCareerGuide.v3.changelogSeen';
 
   function readSeenVersion() {

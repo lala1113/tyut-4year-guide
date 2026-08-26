@@ -4,9 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="国考、省考和选调生时间线、职位筛选、行测申论准备指南。">
+<link rel="canonical" href="https://lala1113.github.io/tyut-4year-guide/kaogong.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="太原理工大学 · 四年生涯规划指南">
+<meta property="og:title" content="考公与选调指南 · 太原理工生涯规划">
+<meta property="og:description" content="国考、省考和选调生时间线、职位筛选、行测申论准备指南。">
+<meta property="og:url" content="https://lala1113.github.io/tyut-4year-guide/kaogong.html">
+<meta property="og:image" content="https://lala1113.github.io/tyut-4year-guide/images/social-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="考公与选调指南 · 太原理工生涯规划">
+<meta name="twitter:description" content="国考、省考和选调生时间线、职位筛选、行测申论准备指南。">
+<meta name="twitter:image" content="https://lala1113.github.io/tyut-4year-guide/images/social-share.jpg">
 <title>考公与选调指南 · 太原理工生涯规划</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23005BAC'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='Georgia,serif' font-weight='bold'%3E%E7%90%86%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css?v=4.0.0">
+<link rel="stylesheet" href="css/style.css?v=4.1.0">
 <!-- Markdown 渲染引擎（CDN；离线打开时自动降级为原文显示） -->
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
@@ -34,15 +47,26 @@
 
     <nav class="main-nav" id="mainNav" aria-label="主导航">
       <a href="index.html" class="nav-link">首页</a>
-      <a href="action-center.html#action-center" class="nav-link">行动中心</a>
-      <a href="foundation.html#foundation" class="nav-link">基础篇</a>
-      <a href="baoyan.html#baoyan" class="nav-link">保研</a>
-      <a href="promotion-destinations.html#promotion" class="nav-link">推免去向</a>
-      <a href="kaoyan.html#kaoyan" class="nav-link">考研</a>
-      <a href="kaogong.html#kaogong" class="nav-link">考公</a>
-      <a href="jiuye.html#jiuye" class="nav-link">就业</a>
+      <details class="nav-group" data-nav-pages="foundation.html,baoyan.html,kaoyan.html,kaogong.html,jiuye.html">
+        <summary class="nav-group-toggle">发展方向 <span aria-hidden="true">⌄</span></summary>
+        <div class="nav-menu">
+          <a href="foundation.html#foundation">基础篇</a>
+          <a href="baoyan.html#baoyan">保研指南</a>
+          <a href="kaoyan.html#kaoyan">考研指南</a>
+          <a href="kaogong.html#kaogong">考公与选调</a>
+          <a href="jiuye.html#jiuye">实习与就业</a>
+        </div>
+      </details>
+      <details class="nav-group" data-nav-pages="action-center.html,exploration.html,promotion-destinations.html">
+        <summary class="nav-group-toggle">规划工具 <span aria-hidden="true">⌄</span></summary>
+        <div class="nav-menu">
+          <a href="action-center.html#action-center">本月行动中心</a>
+          <a href="exploration.html#assessment">六题方向探索</a>
+          <a href="promotion-destinations.html#promotion">推免去向查询</a>
+        </div>
+      </details>
       <a href="resources.html#resource-hub" class="nav-link">资源中心</a>
-      <a href="index.html#contact" class="nav-link">联系作者</a>
+      <a href="index.html#contact" class="nav-link">联系与反馈</a>
     </nav>
 
     <div class="header-actions">
@@ -104,7 +128,7 @@
 
 
 <main class="module-page-main">
-<div class="module-breadcrumb"><a href="index.html">首页</a><span aria-hidden="true">/</span><strong>考公指南</strong></div>
+<div class="module-breadcrumb"><a href="index.html">首页</a><span aria-hidden="true">/</span><strong>考公指南</strong><span aria-hidden="true">/</span><span id="moduleCurrentSection">页面概览</span></div>
 <section class="direction" id="kaogong">
   <div class="section-head">
     <span class="section-index">03</span>
@@ -114,7 +138,7 @@
 
   <div class="block-grid">
     <div class="block col-wide">
-      <h3 class="block-title"><span class="tick">◆</span> 四年时间线</h3>
+      <h3 class="block-title" id="kaogong-topic-1"><span class="tick">◆</span> 四年时间线</h3>
       <div class="timeline">
         <div class="tl-item">
           <div class="tl-dot"><span class="tl-year">大一</span></div>
@@ -175,7 +199,7 @@
     </div>
 
     <div class="block">
-      <h3 class="block-title"><span class="tick">◆</span> 政策 · 条件解读</h3>
+      <h3 class="block-title" id="kaogong-topic-2"><span class="tick">◆</span> 政策 · 条件解读</h3>
       <!-- 内容由 js/content.js 的 Markdown 渲染生成，编辑 Markdown 即可更新 -->
       <div class="policy-list" data-md-key="kaogong"></div>
       <a class="official-link" href="https://zsjyb.tyut.edu.cn/info/1151/8092.htm" target="_blank" rel="noopener">
@@ -247,7 +271,7 @@
       <a href="jiuye.html#jiuye">就业</a>
       <a href="resources.html#seniors">学长学姐说</a>
       <a href="resources.html#videos">视频资源</a>
-      <a href="index.html#contact">联系作者</a>
+      <a href="index.html#contact">联系与反馈</a>
     </nav>
   </div>
   <div class="footer-bottom">
@@ -281,12 +305,26 @@
 
     <div class="update-log-latest">
       <span>当前版本</span>
-      <strong>v4.0.0</strong>
+      <strong>v4.1.0</strong>
       <em>2026-08-26 更新</em>
     </div>
 
     <ol class="update-log-list">
       <li class="update-log-entry is-latest">
+        <div class="update-log-marker" aria-hidden="true"></div>
+        <article>
+          <div class="update-log-meta"><strong>v4.1.0</strong><time datetime="2026-08-26">2026-08-26</time><span>体验与可信度升级</span></div>
+          <h3>导航、搜索、个人记录和数据说明全面增强</h3>
+          <ul>
+            <li>顶部导航改为分组结构，搜索可直接定位到具体小节。</li>
+            <li>新增继续上次使用、资源收藏与最近浏览、动态复核提醒。</li>
+            <li>完善分享封面、推免数据说明与导出、自定义 404 和轻量反馈。</li>
+          </ul>
+          <p class="update-log-tip"><b>推荐用法：</b>回到首页查看“继续上次使用”，或在资源中心收藏常用资料。</p>
+        </article>
+      </li>
+
+      <li class="update-log-entry">
         <div class="update-log-marker" aria-hidden="true"></div>
         <article>
           <div class="update-log-meta"><strong>v4.0.0</strong><time datetime="2026-08-26">2026-08-26</time><span>网站结构升级</span></div>
@@ -391,11 +429,12 @@
 
 <button type="button" class="back-top" id="backTop" aria-label="返回页面顶部">↑</button>
 
-<script src="js/content.js?v=4.0.0"></script>
-<script src="js/md-render.js?v=4.0.0"></script>
-<script src="js/features.js?v=4.0.0"></script>
-<script src="js/search.js?v=4.0.0"></script>
-<script src="js/changelog.js?v=4.0.0"></script>
-<script src="js/main.js?v=4.0.0"></script>
+<script src="js/content-kaogong.js?v=4.1.0"></script>
+<script src="js/md-render.js?v=4.1.0"></script>
+<script src="js/features.js?v=4.1.0"></script>
+<script src="js/search-index.js?v=4.1.0"></script>
+<script src="js/search.js?v=4.1.0"></script>
+<script src="js/changelog.js?v=4.1.0"></script>
+<script src="js/main.js?v=4.1.0"></script>
 </body>
 </html>
