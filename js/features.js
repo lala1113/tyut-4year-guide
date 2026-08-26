@@ -355,10 +355,10 @@
   ];
 
   var ASSESSMENT_DIRECTIONS = {
-    baoyan: { title: '保研 · 推免', href: '#baoyan', strength: '成绩、排名和持续积累可能是你的主要优势。', next: ['核对本学院推免办法和前六学期成绩', '整理竞赛、项目和证书证明材料', '向辅导员或导师确认当年口径'] },
-    kaoyan: { title: '考研 · 统考', href: '#kaoyan', strength: '你可能更适合用明确目标和长期训练换取稳定进步。', next: ['建立 3—6 所目标院校清单', '做一次真题或阶段测试了解基础', '制定每周可执行的公共课与专业课计划'] },
-    kaogong: { title: '考公 · 选调', href: '#kaogong', strength: '你对稳定性、公共事务和结构化训练可能有较强匹配度。', next: ['下载当年国考或省考职位表做筛选', '用真题测试行测与申论基础', '关注学校就业部门与选调正式通知'] },
-    jiuye: { title: '直接就业', href: '#jiuye', strength: '你可能更适合通过项目、实习和反馈快速形成职业能力。', next: ['收集 20 份目标岗位 JD', '参加一次双选会或企业宣讲', '完成一版针对岗位的简历与项目说明'] }
+    baoyan: { title: '保研 · 推免', href: 'baoyan.html#baoyan', strength: '成绩、排名和持续积累可能是你的主要优势。', next: ['核对本学院推免办法和前六学期成绩', '整理竞赛、项目和证书证明材料', '向辅导员或导师确认当年口径'] },
+    kaoyan: { title: '考研 · 统考', href: 'kaoyan.html#kaoyan', strength: '你可能更适合用明确目标和长期训练换取稳定进步。', next: ['建立 3—6 所目标院校清单', '做一次真题或阶段测试了解基础', '制定每周可执行的公共课与专业课计划'] },
+    kaogong: { title: '考公 · 选调', href: 'kaogong.html#kaogong', strength: '你对稳定性、公共事务和结构化训练可能有较强匹配度。', next: ['下载当年国考或省考职位表做筛选', '用真题测试行测与申论基础', '关注学校就业部门与选调正式通知'] },
+    jiuye: { title: '直接就业', href: 'jiuye.html#jiuye', strength: '你可能更适合通过项目、实习和反馈快速形成职业能力。', next: ['收集 20 份目标岗位 JD', '参加一次双选会或企业宣讲', '完成一版针对岗位的简历与项目说明'] }
   };
 
   function initAssessment() {

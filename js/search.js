@@ -10,22 +10,22 @@
   var DIRECTION_LABELS = { all: '全方向', foundation: '基础', baoyan: '保研', kaoyan: '考研', kaogong: '考公', jiuye: '就业', campus: '校园' };
 
   var STATIC_INDEX = [
-    item('首页 · 四年生涯规划指南', '按年级梳理保研、考研、考公与就业四条路线。', '#home', 'tool', 'all', false, '首页 生涯规划 太原理工 四年'),
-    item('本月行动中心', '按年级与当前月份生成三项行动建议，可加入待办并在本机保存进度。', '#action-center', 'tool', 'all', false, '本月 任务 待办 年级 进度 localStorage'),
-    item('六题方向探索', '通过六个选择找到当前更匹配的准备方向，并获得三项下一步行动。', '#assessment', 'tool', 'all', false, '测评 选择 保研 考研 考公 就业'),
-    item('基础篇 · 学业基石', '四六级、转专业、评奖评优、绩点与挂科提醒。', '#foundation', 'policy', 'foundation', true, 'GPA 绩点 学业 大一 大二 四六级'),
-    item('四六级备考与要求', '查询 CET-4、CET-6 的时间安排、准备方法及相关资格要求。', '#foundation', 'policy', 'foundation', true, '英语 四级 六级 425 报名'),
-    item('转专业政策', '查看转专业申请条件、时间窗口和官方通知入口。', '#foundation', 'policy', 'foundation', true, '转专业 GPA 排名 志愿 教务'),
-    item('评奖评优与综测', '奖学金、综合素质测评和能力素质加分说明。', '#foundation', 'policy', 'foundation', true, '综测 奖学金 加分 学生处'),
-    item('挂科与重修提醒', '了解不及格、补考、重修对绩点和推免资格的影响。', '#foundation', 'policy', 'foundation', true, '挂科 重修 补考 不及格'),
-    item('保研 · 推免路径', '推免条件、四年时间线、竞赛目录、夏令营与预推免准备。', '#baoyan', 'policy', 'baoyan', true, '保研资格 推免 夏令营 预推免 直博 排名 竞赛'),
-    item('2026届推免去向查询', '800条匿名记录，支持18个学院、专业和去向院校筛选与统计。', '#promotion', 'tool', 'baoyan', false, '800 学院 专业 院校 去向 统计 匿名'),
-    item('考研 · 统考路径', '从目标院校、公共课和专业课准备到报名、初试、复试与调剂。', '#kaoyan', 'policy', 'kaoyan', true, '研究生 研招网 报名 初试 复试 调剂 数学 英语 政治'),
-    item('考研择校对比工具', '在本机比较3—6所目标院校的专业、考试科目、目标分数和信息来源。', '#school-compare', 'tool', 'kaoyan', false, '择校 院校 专业代码 考试科目 目标分数'),
-    item('考公 · 国考、省考与选调', '公务员考试时间线、职位筛选、行测申论和选调条件。', '#kaogong', 'policy', 'kaogong', true, '公务员 国考 省考 选调生 行测 申论 职位表'),
-    item('直接就业路径', '实习、简历、秋招、春招、面试与签约事项。', '#jiuye', 'policy', 'jiuye', true, '就业 求职 实习 简历 秋招 春招 offer 三方协议'),
-    item('经验与资源中心', '统一查找学长学姐经验、视频与可打印资料，并按方向筛选。', '#resource-hub', 'resource', 'all', false, '资源中心 经验 视频 资料 下载 校园'),
-    item('联系作者', '反馈内容错误、补充经验或提出功能建议。', '#contact', 'resource', 'campus', false, '联系 反馈 作者 勘误 建议')
+    item('首页 · 四年生涯规划指南', '按年级梳理保研、考研、考公与就业四条路线。', 'index.html', 'tool', 'all', false, '首页 生涯规划 太原理工 四年'),
+    item('本月行动中心', '按年级与当前月份生成三项行动建议，可加入待办并在本机保存进度。', 'action-center.html#action-center', 'tool', 'all', false, '本月 任务 待办 年级 进度 localStorage'),
+    item('六题方向探索', '通过六个选择找到当前更匹配的准备方向，并获得三项下一步行动。', 'exploration.html#assessment', 'tool', 'all', false, '测评 选择 保研 考研 考公 就业'),
+    item('基础篇 · 学业基石', '四六级、转专业、评奖评优、绩点与挂科提醒。', 'foundation.html#foundation', 'policy', 'foundation', true, 'GPA 绩点 学业 大一 大二 四六级'),
+    item('四六级备考与要求', '查询 CET-4、CET-6 的时间安排、准备方法及相关资格要求。', 'foundation.html#foundation', 'policy', 'foundation', true, '英语 四级 六级 425 报名'),
+    item('转专业政策', '查看转专业申请条件、时间窗口和官方通知入口。', 'foundation.html#foundation', 'policy', 'foundation', true, '转专业 GPA 排名 志愿 教务'),
+    item('评奖评优与综测', '奖学金、综合素质测评和能力素质加分说明。', 'foundation.html#foundation', 'policy', 'foundation', true, '综测 奖学金 加分 学生处'),
+    item('挂科与重修提醒', '了解不及格、补考、重修对绩点和推免资格的影响。', 'foundation.html#foundation', 'policy', 'foundation', true, '挂科 重修 补考 不及格'),
+    item('保研 · 推免路径', '推免条件、四年时间线、竞赛目录、夏令营与预推免准备。', 'baoyan.html#baoyan', 'policy', 'baoyan', true, '保研资格 推免 夏令营 预推免 直博 排名 竞赛'),
+    item('2026届推免去向查询', '800条匿名记录，支持18个学院、专业和去向院校筛选与统计。', 'promotion-destinations.html#promotion', 'tool', 'baoyan', false, '800 学院 专业 院校 去向 统计 匿名'),
+    item('考研 · 统考路径', '从目标院校、公共课和专业课准备到报名、初试、复试与调剂。', 'kaoyan.html#kaoyan', 'policy', 'kaoyan', true, '研究生 研招网 报名 初试 复试 调剂 数学 英语 政治'),
+    item('考研择校对比工具', '在本机比较3—6所目标院校的专业、考试科目、目标分数和信息来源。', 'kaoyan.html#school-compare', 'tool', 'kaoyan', false, '择校 院校 专业代码 考试科目 目标分数'),
+    item('考公 · 国考、省考与选调', '公务员考试时间线、职位筛选、行测申论和选调条件。', 'kaogong.html#kaogong', 'policy', 'kaogong', true, '公务员 国考 省考 选调生 行测 申论 职位表'),
+    item('直接就业路径', '实习、简历、秋招、春招、面试与签约事项。', 'jiuye.html#jiuye', 'policy', 'jiuye', true, '就业 求职 实习 简历 秋招 春招 offer 三方协议'),
+    item('经验与资源中心', '统一查找学长学姐经验、视频与可打印资料，并按方向筛选。', 'resources.html#resource-hub', 'resource', 'all', false, '资源中心 经验 视频 资料 下载 校园'),
+    item('联系作者', '反馈内容错误、补充经验或提出功能建议。', 'index.html#contact', 'resource', 'campus', false, '联系 反馈 作者 勘误 建议')
   ];
 
   function item(title, desc, href, type, direction, official, tags) {
@@ -43,7 +43,7 @@
 
   function anchorFor(element) {
     var section = element.closest('section[id]');
-    if (!section) return '#home';
+    if (!section) return 'index.html';
     if (['seniors', 'videos', 'resources'].indexOf(section.id) !== -1) return '#resource-hub';
     return '#' + section.id;
   }

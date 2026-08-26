@@ -42,6 +42,8 @@
   });
   var navLinks = document.querySelectorAll('.main-nav .nav-link');
 
+  var currentFile = window.location.pathname.split('/').pop() || 'index.html';
+
   var spy = function () {
     var pos = window.scrollY + 140;
     var currentId = '';
@@ -51,7 +53,15 @@
       }
     });
     navLinks.forEach(function (link) {
-      link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+      var href = link.getAttribute('href') || '';
+      var parts = href.split('#');
+      var targetFile = parts[0] || currentFile;
+      var targetId = parts[1] || '';
+      var active = targetFile === currentFile && (!targetId || targetId === currentId);
+      if (currentFile === 'index.html' && targetFile === currentFile && !targetId && currentId === 'contact') active = false;
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
     });
   };
   window.addEventListener('scroll', spy, { passive: true });

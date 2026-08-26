@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '3.1.2';
+  var CURRENT_VERSION = '4.0.0';
   var STORAGE_KEY = 'tyutCareerGuide.v3.changelogSeen';
 
   function readSeenVersion() {
@@ -83,6 +83,9 @@
 
     toggle.classList.toggle('seen', readSeenVersion() === CURRENT_VERSION);
     toggle.addEventListener('click', openDialog);
+    document.querySelectorAll('[data-open-update-log]').forEach(function (opener) {
+      opener.addEventListener('click', openDialog);
+    });
     closeButton.addEventListener('click', closeDialog);
     dialog.addEventListener('click', function (event) {
       if (event.target === dialog || event.target.closest('[data-update-log-link]')) closeDialog();
