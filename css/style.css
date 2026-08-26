@@ -1902,7 +1902,7 @@ h3[id] { scroll-margin-top: calc(var(--header-h) + 18px); }
 }
 
 /* ==========================================================================
-   网站更新日志（v3.1.0）
+   网站更新日志（v3.1.1）
    ========================================================================== */
 
 body.update-log-open { overflow: hidden; }
@@ -1913,7 +1913,7 @@ body.update-log-open { overflow: hidden; }
   align-items: center;
   justify-content: center;
   gap: 7px;
-  min-width: 38px;
+  min-width: 0;
   height: 38px;
   padding: 0 10px;
   border: 0;
@@ -1925,8 +1925,7 @@ body.update-log-open { overflow: hidden; }
 }
 .update-log-toggle:hover,
 .update-log-toggle.active { background: var(--blue-soft); color: var(--blue-deep); }
-.update-log-toggle-icon { font-size: 21px; line-height: 1; }
-.update-log-toggle-label { display: none; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+.update-log-toggle-label { display: inline; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
 .update-log-unread {
   position: absolute;
   top: 5px;
@@ -2062,7 +2061,6 @@ body.update-log-open { overflow: hidden; }
 
 @media (min-width: 1200px) {
   .update-log-toggle { padding: 0 12px; }
-  .update-log-toggle-label { display: inline; }
 }
 
 /* 新增日志入口后，较窄平板提前切换为折叠菜单。 */
@@ -2095,7 +2093,7 @@ body.update-log-open { overflow: hidden; }
   .header-actions { gap: 4px; }
   .brand { gap: 7px; }
   .brand-text strong { font-size: 13.5px; }
-  .update-log-toggle { width: 38px; padding: 0; }
+  .update-log-toggle { padding: 0 7px; }
   .update-log-dialog { align-items: flex-end; padding: 12px 8px 0; }
   .update-log-panel { max-height: calc(100vh - 12px); max-height: calc(100dvh - 12px); border-radius: 18px 18px 0 0; }
   .update-log-head { padding: 20px 18px 16px; }

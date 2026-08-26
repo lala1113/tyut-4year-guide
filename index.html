@@ -45,7 +45,6 @@
 
     <div class="header-actions">
       <button type="button" class="update-log-toggle" id="updateLogToggle" aria-label="查看网站更新日志" aria-haspopup="dialog" aria-controls="updateLogDialog" aria-expanded="false">
-        <span class="update-log-toggle-icon" aria-hidden="true">↻</span>
         <span class="update-log-toggle-label">更新日志</span>
         <span class="update-log-unread" aria-hidden="true"></span>
       </button>
@@ -1140,8 +1139,16 @@
         <span class="resource-go">查看清单 ↗</span>
       </div>
     </a>
+    <a class="resource-card" href="files/太理保研清单01_课程学分表.xlsx" download>
+      <div class="resource-icon" style="--rc:#16764A">📊</div>
+      <div class="resource-body">
+        <h4>太理保研清单① · 课程学分表</h4>
+        <p>Excel 原表：整理 8 门课程、20.5 学分、考核方式、目标分和每周动作；含展示版、可填写模板、口径说明三个工作表。</p>
+        <span class="resource-go">下载 Excel 表格 ↘</span>
+      </div>
+    </a>
   </div>
-  <p class="section-note">提示：浏览器打开后可用 Ctrl/Cmd + P 打印为 PDF 保存；简历模板亦可在 Word / WPS 中自行美化。</p>
+  <p class="section-note">提示：浏览器打开后可用 Ctrl/Cmd + P 打印为 PDF 保存；简历模板亦可在 Word / WPS 中自行美化。Excel 表格请结合本人培养方案核对后使用。</p>
 </section>
 
 <!-- ======================= 联系作者 ======================= -->
@@ -1224,12 +1231,39 @@
 
     <div class="update-log-latest">
       <span>当前版本</span>
-      <strong>v3.1.0</strong>
-      <em>2026-08-25 更新</em>
+      <strong>v3.1.2</strong>
+      <em>2026-08-26 更新</em>
     </div>
 
     <ol class="update-log-list">
       <li class="update-log-entry is-latest">
+        <div class="update-log-marker" aria-hidden="true"></div>
+        <article>
+          <div class="update-log-meta"><strong>v3.1.2</strong><time datetime="2026-08-26">2026-08-26</time><span>资料更新</span></div>
+          <h3>资料中心新增 Excel 课程学分表</h3>
+          <ul>
+            <li>新增《太理保研清单① · 课程学分表》原始 Excel 文件，可直接下载。</li>
+            <li>文件包含“拍摄展示版”“可填写模板”“口径说明”三个工作表。</li>
+            <li>课程与学分请结合本人培养方案和学校最新通知核对后使用。</li>
+          </ul>
+          <p class="update-log-tip"><b>怎么用：</b>打开“资源中心 → 资料”，点击 Excel 卡片即可下载。</p>
+        </article>
+      </li>
+
+      <li class="update-log-entry">
+        <div class="update-log-marker" aria-hidden="true"></div>
+        <article>
+          <div class="update-log-meta"><strong>v3.1.1</strong><time datetime="2026-08-26">2026-08-26</time><span>界面调整</span></div>
+          <h3>更新日志入口改为文字按钮</h3>
+          <ul>
+            <li>右上角直接显示“更新日志”，不再依赖图标猜测入口。</li>
+            <li>保留未读提示点、弹层、ESC 关闭和键盘焦点管理。</li>
+          </ul>
+          <p class="update-log-tip"><b>怎么用：</b>看到“更新日志”旁边的橙色提示点时，点击即可查看最近变化。</p>
+        </article>
+      </li>
+
+      <li class="update-log-entry">
         <div class="update-log-marker" aria-hidden="true"></div>
         <article>
           <div class="update-log-meta"><strong>v3.1.0</strong><time datetime="2026-08-25">2026-08-25</time><span>使用体验</span></div>
@@ -1298,7 +1332,7 @@
 <script src="js/promotion-data.js?v=3.0.0"></script>
 <script src="js/features.js?v=3.0.0"></script>
 <script src="js/search.js?v=3.0.0"></script>
-<script src="js/changelog.js?v=3.1.0"></script>
+<script src="js/changelog.js?v=3.1.2"></script>
 <script src="js/main.js?v=3.0.0"></script>
 </body>
 </html>
