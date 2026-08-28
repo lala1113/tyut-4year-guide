@@ -33,7 +33,32 @@
   }
 
   function cleanText(value) {
-    return String(value || '').replace(/\s+/g, ' ').trim();
+    return String(value || '')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      .replace(/[*_`>#|]/g, ' ')
+      .replace(/-{3,}/g, ' ')
+      .replace(/◆/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function snippet(value, limit) {
+    var text = cleanText(value);
+    if (text.length <= limit) return text;
+    return text.slice(0, limit).replace(/[，。；、\s]+$/g, '') + '…';
+  }
+
+  function reviewLabel(entry) {
+    var labels = {
+      foundation: '按学年核验',
+      baoyan: '2026—2027参考',
+      kaoyan: '按报考年度核验',
+      kaogong: '按当年公告核验',
+      jiuye: '历史数据参考'
+    };
+    return labels[entry.direction] || '';
   }
 
   function sectionDirection(id) {
@@ -186,12 +211,14 @@
       }
       results.innerHTML = matches.map(function (match) {
         var entry = match.entry;
+        var review = reviewLabel(entry);
         return '<a class="search-result-item" role="option" aria-selected="false" href="' + escapeHtml(entry.href) + '">' +
           '<span class="search-result-meta"><span>' + escapeHtml(TYPE_LABELS[entry.type] || entry.type) + '</span>' +
           '<span>' + escapeHtml(DIRECTION_LABELS[entry.direction] || entry.direction) + '</span>' +
-          (entry.official ? '<span class="official">官方来源</span>' : '') + '</span>' +
+          (entry.official ? '<span class="official">官方来源</span>' : '') +
+          (review ? '<span class="review">' + escapeHtml(review) + '</span>' : '') + '</span>' +
           '<span class="sr-title">' + highlight(entry.title, query) + '</span>' +
-          '<span class="sr-desc">' + highlight(entry.desc, query) + '</span><span class="sr-go">→</span></a>';
+          '<span class="sr-desc">' + highlight(snippet(entry.desc, 96), query) + '</span><span class="sr-go">→</span></a>';
       }).join('');
     }
 

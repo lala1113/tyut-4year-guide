@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lala1113.github.io/tyut-4year-guide/sitemap.xml

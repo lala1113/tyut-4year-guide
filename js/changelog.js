@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '4.1.0';
+  var CURRENT_VERSION = '4.2.0';
   var STORAGE_KEY = 'tyutCareerGuide.v3.changelogSeen';
 
   function readSeenVersion() {
@@ -24,6 +24,27 @@
     var panel = dialog && dialog.querySelector('.update-log-panel');
     var closeButton = document.getElementById('updateLogClose');
     if (!toggle || !dialog || !panel || !closeButton) return;
+
+    var latest = panel.querySelector('.update-log-latest');
+    var list = panel.querySelector('.update-log-list');
+    if (latest) {
+      latest.querySelector('strong').textContent = 'v4.2.0';
+      latest.querySelector('em').textContent = '2026-08-28 更新';
+    }
+    if (list && !list.querySelector('[data-version="4.2.0"]')) {
+      var previousLatest = list.querySelector('.is-latest');
+      if (previousLatest) previousLatest.classList.remove('is-latest');
+      list.insertAdjacentHTML('afterbegin',
+        '<li class="update-log-entry is-latest" data-version="4.2.0">' +
+          '<div class="update-log-marker" aria-hidden="true"></div>' +
+          '<article><div class="update-log-meta"><strong>v4.2.0</strong><time datetime="2026-08-28">2026-08-28</time><span>可靠性与可访问性修复</span></div>' +
+          '<h3>旧链接、信息年份、搜索和本地记录能力集中修复</h3><ul>' +
+          '<li>旧版推免链接自动跳转，补充站点地图与搜索引擎入口。</li>' +
+          '<li>标明历史数据年份，清理搜索摘要并补充核验标签。</li>' +
+          '<li>新增本地记录备份恢复、内页主标题、跳到正文与手机端吸顶目录。</li>' +
+          '<li>Markdown 渲染脚本改为站内托管，降低外部网络波动影响。</li>' +
+          '</ul></article></li>');
+    }
 
     var lastFocused = null;
 

@@ -25,6 +25,72 @@
     }
   }
 
+  var BACKUP_KEYS = ['actionState', 'targetSchools', 'resourceFavorites', 'recentResources', 'favoriteSections', 'recentVisit'];
+
+  function isValidBackupValue(key, value) {
+    if (key === 'actionState') return value && typeof value === 'object' && Array.isArray(value.todos);
+    if (key === 'recentVisit') return value && typeof value === 'object';
+    return Array.isArray(value);
+  }
+
+  function initLocalBackup() {
+    var exportButton = document.getElementById('localBackupExport');
+    var importInput = document.getElementById('localBackupImport');
+    var status = document.getElementById('localBackupStatus');
+    if (!exportButton || !importInput || !status) return;
+
+    function setStatus(message, isError) {
+      status.textContent = message;
+      status.classList.toggle('error', Boolean(isError));
+    }
+
+    exportButton.addEventListener('click', function () {
+      var data = {};
+      BACKUP_KEYS.forEach(function (key) {
+        var value = loadLocal(key, null);
+        if (value !== null) data[key] = value;
+      });
+      var payload = JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), data: data }, null, 2);
+      var url = URL.createObjectURL(new Blob([payload], { type: 'application/json;charset=utf-8' }));
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = '太理生涯规划_本地备份_' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setStatus('备份已导出。请妥善保存该文件。');
+    });
+
+    importInput.addEventListener('change', function () {
+      var file = importInput.files && importInput.files[0];
+      if (!file) return;
+      if (file.size > 1000000) {
+        setStatus('备份文件过大，请确认选择的是本站导出的 JSON 文件。', true);
+        importInput.value = '';
+        return;
+      }
+      file.text().then(function (text) {
+        var payload = JSON.parse(text);
+        if (!payload || payload.version !== 1 || !payload.data || typeof payload.data !== 'object') throw new Error('invalid backup');
+        var imported = 0;
+        BACKUP_KEYS.forEach(function (key) {
+          if (!Object.prototype.hasOwnProperty.call(payload.data, key)) return;
+          if (!isValidBackupValue(key, payload.data[key])) throw new Error('invalid value');
+          saveLocal(key, payload.data[key]);
+          imported += 1;
+        });
+        if (!imported) throw new Error('empty backup');
+        setStatus('已恢复 ' + imported + ' 类本地记录，页面即将刷新。');
+        window.setTimeout(function () { window.location.reload(); }, 700);
+      }).catch(function () {
+        setStatus('无法导入：文件格式不正确或不是本站备份。', true);
+      }).finally(function () {
+        importInput.value = '';
+      });
+    });
+  }
+
   function escapeHtml(value) {
     return String(value == null ? '' : value)
       .replace(/&/g, '&amp;')
@@ -42,12 +108,12 @@
       warning: '转专业、评奖评优、重修与推免资格口径可能按学年调整，请以学院和学校最新通知为准。'
     },
     baoyan: {
-      updatedAt: '2026-08-25', applicable: '2026—2027 学年参考',
+      updatedAt: '2026-08-28', applicable: '2026—2027 学年参考；竞赛目录为2024版历史依据',
       source: '学校推免办法、学院公开通知与公开案例', status: '动态政策需年度核验', official: true,
       warning: '学院名额、综合成绩算法、竞赛加分和接收院校要求均可能变化，实际申请前必须逐项核对。'
     },
     promotion: {
-      updatedAt: '2026-08-23', applicable: '2026届公开推免喜报',
+      updatedAt: '2026-08-28', applicable: '2026届公开推免喜报',
       source: '本科招生公众号推免喜报及公开原始文件', status: '匿名汇总 · 待最终人工复核', official: false,
       warning: '本页是去向记录而非推免率；未掌握各专业总人数时，不计算或暗示专业推免率。'
     },
@@ -57,12 +123,12 @@
       warning: '招生人数、考试科目、报名时间、复试线和调剂缺额均可能变化，请按报考年度核验。'
     },
     kaogong: {
-      updatedAt: '2026-08-25', applicable: '方法长期有效；职位与条件按当年公告',
+      updatedAt: '2026-08-28', applicable: '方法长期有效；2026考季数据为历史参考',
       source: '国家公务员局、山西人事考试专栏及公开选调公告', status: '官方入口已标注', official: true,
       warning: '专业目录、应届身份、党员或学生干部条件、岗位数量与考试时间必须以当年职位表为准。'
     },
     jiuye: {
-      updatedAt: '2026-08-25', applicable: '2025届数据参考；求职方法长期有效',
+      updatedAt: '2026-08-28', applicable: '2022—2023届历史数据；求职方法长期有效',
       source: '学校就业质量报告、就业信息网与企业公开招聘入口', status: '数据年份已标注', official: true,
       warning: '招聘批次、岗位、薪酬和工作地点会变化；签约前请核验招聘主体、合同条款和企业公告。'
     },
@@ -508,6 +574,8 @@
     }
 
     var allRows = flattenRows();
+    var combinationCount = document.getElementById('promotionCombinationCount');
+    if (combinationCount) combinationCount.textContent = allRows.length;
 
     function renderTop(rows) {
       var counts = {};
@@ -541,7 +609,7 @@
       currentRows = rows.slice();
 
       var people = rows.reduce(function (total, row) { return total + row.count; }, 0);
-      document.getElementById('promotionResultSummary').textContent = '找到 ' + rows.length + ' 组“专业—去向院校”记录，共 ' + people + ' 人次。';
+      document.getElementById('promotionResultSummary').textContent = '找到 ' + rows.length + ' 组“专业—去向院校”聚合结果，共 ' + people + ' 人次。' + (rows.length > 250 ? ' 页面展示前250组，导出包含全部结果。' : '');
       tableBody.innerHTML = '';
       rows.slice(0, 250).forEach(function (row) {
         var tr = document.createElement('tr');
@@ -903,8 +971,7 @@
       favorite.textContent = favorites.indexOf(id) !== -1 ? '★ 已收藏' : '☆ 收藏本板块';
       tools.appendChild(toc);
       tools.appendChild(favorite);
-      var verification = section.querySelector(':scope > .verification-card');
-      var anchor = verification || section.querySelector('.section-head');
+      var anchor = section.querySelector('.section-head, .promotion-hero');
       if (anchor) anchor.insertAdjacentElement('afterend', tools);
     });
 
@@ -929,6 +996,7 @@
   function init() {
     initVerificationCards();
     initActionCenter();
+    initLocalBackup();
     initAssessment();
     initPromotionQuery();
     initSchoolCompare();

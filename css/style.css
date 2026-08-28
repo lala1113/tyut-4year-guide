@@ -65,6 +65,7 @@ img, svg { display: inline-block; vertical-align: middle; }
   padding: 1px 12px;
   margin-bottom: 10px;
 }
+.section-head h1,
 .section-head h2 { font-size: clamp(26px, 3.4vw, 38px); margin-bottom: 10px; }
 .section-desc { color: var(--ink-2); font-size: 15.5px; max-width: 880px; }
 .section-desc .hl { color: var(--orange); font-weight: 700; }
@@ -1710,6 +1711,7 @@ a:focus-visible {
 /* 六题方向探索 */
 .assessment-section { padding: 70px 24px; color: #fff; background: #092D4D; }
 .assessment-shell { max-width: calc(var(--maxw) - 48px); margin: 0 auto; display: grid; grid-template-columns: .82fr 1.18fr; gap: 52px; align-items: center; }
+.assessment-intro h1,
 .assessment-intro h2 { margin: 8px 0 15px; color: #fff; font-size: clamp(28px, 4vw, 42px); }
 .assessment-intro > p { color: rgba(255,255,255,.78); }
 .assessment-disclaimer { margin-top: 18px; padding-left: 13px; border-left: 3px solid var(--orange); font-size: 12.5px; }
@@ -1746,7 +1748,76 @@ a:focus-visible {
 .promotion-hero,
 .promotion-workspace { max-width: calc(var(--maxw) - 48px); margin: 0 auto; }
 .promotion-hero { display: grid; grid-template-columns: 1fr .92fr; gap: 46px; align-items: end; }
+.promotion-hero h1,
 .promotion-hero h2 { margin: 7px 0 12px; font-size: clamp(30px, 4.5vw, 48px); }
+
+/* ========================================================================== 
+   v4.2 可访问性、历史数据提示与本地备份
+   ========================================================================== */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 300;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  transform: translateY(-160%);
+}
+.skip-link:focus { transform: translateY(0); }
+
+.historical-note {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--orange);
+  border-radius: 0 8px 8px 0;
+  background: var(--orange-soft);
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.search-result-meta .review { background: #F4F6F8; color: var(--ink-3); }
+
+.local-backup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 20px;
+  margin-top: 18px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+.local-backup p { margin-top: 5px; color: var(--ink-3); font-size: 13px; line-height: 1.65; }
+.local-backup-actions { display: flex; align-items: center; gap: 8px; }
+.local-backup-actions label { display: inline-flex; align-items: center; cursor: pointer; }
+.local-backup-status { grid-column: 1 / -1; min-height: 20px; margin: 0 !important; color: var(--blue) !important; }
+.local-backup-status.error { color: #B42318 !important; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.search-toggle,
+.update-log-toggle,
+.nav-toggle { min-width: 44px; min-height: 44px; }
+
+@media (max-width: 640px) {
+  .local-backup { grid-template-columns: 1fr; }
+  .local-backup-actions { flex-wrap: wrap; }
+  .local-backup-status { grid-column: 1; }
+}
 .promotion-hero p { max-width: 680px; color: var(--ink-2); }
 .promotion-hero-note { padding: 16px 18px; border-left: 3px solid var(--orange); border-radius: 10px; background: var(--orange-soft); color: var(--orange-deep); font-size: 12.5px; font-weight: 700; }
 .promotion-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: calc(var(--maxw) - 48px); margin: 18px auto 0; }
@@ -2409,4 +2480,23 @@ body.update-log-open { overflow: hidden; }
   .feedback-actions { justify-content: flex-start; }
   .feedback-status { width: 100%; }
   .not-found-actions { flex-direction: column; }
+
+  .section-reader-tools {
+    position: sticky;
+    top: calc(var(--header-h) + 39px);
+    z-index: 32;
+    flex-direction: row;
+    align-items: center;
+    max-width: 100%;
+    margin-top: 0;
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 5px 14px rgba(22, 48, 73, .08);
+  }
+  .section-toc { flex: 1; flex-wrap: nowrap; max-height: none; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .section-toc::-webkit-scrollbar { display: none; }
+  .section-toc a { display: inline-flex; align-items: center; min-height: 44px; white-space: nowrap; }
+  .section-favorite { min-height: 44px; }
 }
