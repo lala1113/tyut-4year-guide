@@ -19,7 +19,7 @@
     item('评奖评优与综测', '奖学金、综合素质测评和能力素质加分说明。', 'foundation.html#foundation', 'policy', 'foundation', true, '综测 奖学金 加分 学生处'),
     item('挂科与重修提醒', '了解不及格、补考、重修对绩点和推免资格的影响。', 'foundation.html#foundation', 'policy', 'foundation', true, '挂科 重修 补考 不及格'),
     item('保研 · 推免路径', '推免条件、四年时间线、竞赛目录、夏令营与预推免准备。', 'baoyan.html#baoyan', 'policy', 'baoyan', true, '保研资格 推免 夏令营 预推免 直博 排名 竞赛'),
-    item('2026届推免去向查询', '800条匿名记录，支持18个学院、专业和去向院校筛选与统计。', 'promotion-destinations.html#promotion', 'tool', 'baoyan', false, '800 学院 专业 院校 去向 统计 匿名'),
+    item('2026届推免去向查询', '845条匿名记录，支持19个学院、专业和去向院校筛选与统计。', 'promotion-destinations.html#promotion', 'tool', 'baoyan', false, '845 文法 外语 学院 专业 院校 去向 统计 匿名'),
     item('考研 · 统考路径', '从目标院校、公共课和专业课准备到报名、初试、复试与调剂。', 'kaoyan.html#kaoyan', 'policy', 'kaoyan', true, '研究生 研招网 报名 初试 复试 调剂 数学 英语 政治'),
     item('考研择校对比工具', '在本机比较3—6所目标院校的专业、考试科目、目标分数和信息来源。', 'kaoyan.html#school-compare', 'tool', 'kaoyan', false, '择校 院校 专业代码 考试科目 目标分数'),
     item('考公 · 国考、省考与选调', '公务员考试时间线、职位筛选、行测申论和选调条件。', 'kaogong.html#kaogong', 'policy', 'kaogong', true, '公务员 国考 省考 选调生 行测 申论 职位表'),

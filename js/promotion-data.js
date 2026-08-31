@@ -5,14 +5,14 @@
   window.PROMOTION_DATA = {
   "meta": {
     "title": "2026届推免去向查询",
-    "updatedAt": "2026-08-23",
+    "updatedAt": "2026-08-31",
     "applicableYear": "2026届",
-    "source": "“太原理工大学本科招生”公众号推免喜报及公开原始文件",
+    "source": "学校及学院公开推免喜报、公开原始文件",
     "status": "匿名汇总 · 待最终人工复核",
-    "total": 800,
-    "collegeCount": 18,
-    "majorCount": 54,
-    "universityCount": 93
+    "total": 845,
+    "collegeCount": 19,
+    "majorCount": 60,
+    "universityCount": 99
   },
   "colleges": [
     {
@@ -2157,6 +2157,176 @@
             },
             {
               "name": "中国矿业大学",
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "文法与外语学院",
+      "count": 45,
+      "majors": [
+        {
+          "name": "法学专业",
+          "count": 14,
+          "destinations": [
+            {
+              "name": "中南财经政法大学",
+              "count": 9
+            },
+            {
+              "name": "中国农业大学",
+              "count": 1
+            },
+            {
+              "name": "北京理工大学",
+              "count": 1
+            },
+            {
+              "name": "山东大学",
+              "count": 1
+            },
+            {
+              "name": "西北大学",
+              "count": 1
+            },
+            {
+              "name": "辽宁大学",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "name": "行政管理专业",
+          "count": 7,
+          "destinations": [
+            {
+              "name": "中南财经政法大学",
+              "count": 2
+            },
+            {
+              "name": "中国农业大学",
+              "count": 1
+            },
+            {
+              "name": "华南理工大学",
+              "count": 1
+            },
+            {
+              "name": "南昌大学",
+              "count": 1
+            },
+            {
+              "name": "河海大学",
+              "count": 1
+            },
+            {
+              "name": "重庆大学",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "name": "汉语国际教育专业",
+          "count": 4,
+          "destinations": [
+            {
+              "name": "吉林大学",
+              "count": 2
+            },
+            {
+              "name": "南京师范大学",
+              "count": 1
+            },
+            {
+              "name": "南开大学",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "name": "英语专业",
+          "count": 12,
+          "destinations": [
+            {
+              "name": "华南理工大学",
+              "count": 2
+            },
+            {
+              "name": "西北工业大学",
+              "count": 2
+            },
+            {
+              "name": "北京外国语大学",
+              "count": 1
+            },
+            {
+              "name": "华中师范大学",
+              "count": 1
+            },
+            {
+              "name": "南京航空航天大学",
+              "count": 1
+            },
+            {
+              "name": "太原理工大学",
+              "count": 1
+            },
+            {
+              "name": "武汉大学",
+              "count": 1
+            },
+            {
+              "name": "江南大学",
+              "count": 1
+            },
+            {
+              "name": "电子科技大学",
+              "count": 1
+            },
+            {
+              "name": "西北大学",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "name": "英日专业",
+          "count": 4,
+          "destinations": [
+            {
+              "name": "南京航空航天大学",
+              "count": 1
+            },
+            {
+              "name": "太原理工大学",
+              "count": 1
+            },
+            {
+              "name": "湖南大学",
+              "count": 1
+            },
+            {
+              "name": "陕西师范大学",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "name": "英俄专业",
+          "count": 4,
+          "destinations": [
+            {
+              "name": "吉林大学",
+              "count": 2
+            },
+            {
+              "name": "东南大学",
+              "count": 1
+            },
+            {
+              "name": "南京理工大学",
               "count": 1
             }
           ]

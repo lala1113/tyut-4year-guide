@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '4.2.0';
+  var CURRENT_VERSION = '4.2.1';
   var STORAGE_KEY = 'tyutCareerGuide.v3.changelogSeen';
 
   function readSeenVersion() {
@@ -28,14 +28,25 @@
     var latest = panel.querySelector('.update-log-latest');
     var list = panel.querySelector('.update-log-list');
     if (latest) {
-      latest.querySelector('strong').textContent = 'v4.2.0';
-      latest.querySelector('em').textContent = '2026-08-28 更新';
+      latest.querySelector('strong').textContent = 'v4.2.1';
+      latest.querySelector('em').textContent = '2026-08-31 更新';
     }
-    if (list && !list.querySelector('[data-version="4.2.0"]')) {
+    if (list && !list.querySelector('[data-version="4.2.1"]')) {
       var previousLatest = list.querySelector('.is-latest');
       if (previousLatest) previousLatest.classList.remove('is-latest');
       list.insertAdjacentHTML('afterbegin',
-        '<li class="update-log-entry is-latest" data-version="4.2.0">' +
+        '<li class="update-log-entry is-latest" data-version="4.2.1">' +
+          '<div class="update-log-marker" aria-hidden="true"></div>' +
+          '<article><div class="update-log-meta"><strong>v4.2.1</strong><time datetime="2026-08-31">2026-08-31</time><span>推免数据补充</span></div>' +
+          '<h3>新增文法与外语学院 2026 届推免去向</h3><ul>' +
+          '<li>新增文法与外语学院 45 条匿名来源记录，覆盖 6 个专业。</li>' +
+          '<li>查询数据更新为 845 条记录、19 个学院、60 个专业口径和 99 所去向院校。</li>' +
+          '<li>继续只展示学院、专业、去向院校与人数，不展示学生姓名。</li>' +
+          '</ul></article></li>');
+    }
+    if (list && !list.querySelector('[data-version="4.2.0"]')) {
+      list.querySelector('[data-version="4.2.1"]').insertAdjacentHTML('afterend',
+        '<li class="update-log-entry" data-version="4.2.0">' +
           '<div class="update-log-marker" aria-hidden="true"></div>' +
           '<article><div class="update-log-meta"><strong>v4.2.0</strong><time datetime="2026-08-28">2026-08-28</time><span>可靠性与可访问性修复</span></div>' +
           '<h3>旧链接、信息年份、搜索和本地记录能力集中修复</h3><ul>' +

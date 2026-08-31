@@ -113,8 +113,8 @@
       warning: '学院名额、综合成绩算法、竞赛加分和接收院校要求均可能变化，实际申请前必须逐项核对。'
     },
     promotion: {
-      updatedAt: '2026-08-28', applicable: '2026届公开推免喜报',
-      source: '本科招生公众号推免喜报及公开原始文件', status: '匿名汇总 · 待最终人工复核', official: false,
+      updatedAt: '2026-08-31', applicable: '2026届公开推免喜报',
+      source: '学校及学院公开推免喜报、公开原始文件', status: '匿名汇总 · 待最终人工复核', official: false,
       warning: '本页是去向记录而非推免率；未掌握各专业总人数时，不计算或暗示专业推免率。'
     },
     kaoyan: {
