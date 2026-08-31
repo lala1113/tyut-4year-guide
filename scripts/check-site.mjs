@@ -42,6 +42,19 @@ for (const file of htmlPages) {
       errors.push(`${file} 引用了不存在的文件：${ref}`);
     }
   }
+
+  for (const match of html.matchAll(/<img\b([^>]*)>/g)) {
+    if (!/\balt="[^"]*"/.test(match[1])) errors.push(`${file} 存在缺少 alt 的图片`);
+  }
+  for (const match of html.matchAll(/<button\b([^>]*)>/g)) {
+    if (!/\btype="(?:button|submit|reset)"/.test(match[1])) errors.push(`${file} 存在未声明 type 的按钮`);
+  }
+  for (const match of html.matchAll(/<a\b([^>]*)>/g)) {
+    const attrs = match[1];
+    if (/\btarget="_blank"/.test(attrs) && !/\brel="[^"]*\bnoopener\b/.test(attrs)) {
+      errors.push(`${file} 存在缺少 noopener 的新窗口链接`);
+    }
+  }
 }
 
 const allHtml = htmlPages.map(read).join('\n');

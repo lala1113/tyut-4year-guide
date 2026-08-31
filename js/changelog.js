@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '4.2.1';
+  var CURRENT_VERSION = '4.2.2';
   var STORAGE_KEY = 'tyutCareerGuide.v3.changelogSeen';
 
   function readSeenVersion() {
@@ -28,14 +28,25 @@
     var latest = panel.querySelector('.update-log-latest');
     var list = panel.querySelector('.update-log-list');
     if (latest) {
-      latest.querySelector('strong').textContent = 'v4.2.1';
-      latest.querySelector('em').textContent = '2026-08-31 更新';
+      latest.querySelector('strong').textContent = 'v4.2.2';
+      latest.querySelector('em').textContent = '2026-09-01 更新';
     }
-    if (list && !list.querySelector('[data-version="4.2.1"]')) {
+    if (list && !list.querySelector('[data-version="4.2.2"]')) {
       var previousLatest = list.querySelector('.is-latest');
       if (previousLatest) previousLatest.classList.remove('is-latest');
       list.insertAdjacentHTML('afterbegin',
-        '<li class="update-log-entry is-latest" data-version="4.2.1">' +
+        '<li class="update-log-entry is-latest" data-version="4.2.2">' +
+          '<div class="update-log-marker" aria-hidden="true"></div>' +
+          '<article><div class="update-log-meta"><strong>v4.2.2</strong><time datetime="2026-09-01">2026-09-01</time><span>链接与可维护性修复</span></div>' +
+          '<h3>修复失效来源与公共导航细节</h3><ul>' +
+          '<li>研究生院入口改用学校公布的可访问地址，避免证书错误阻断。</li>' +
+          '<li>移除来源失效且无法重新核验的考研经验引用。</li>' +
+          '<li>公共导航按钮补齐类型声明，并增加链接安全、图片替代文本和按钮类型检查。</li>' +
+          '</ul></article></li>');
+    }
+    if (list && !list.querySelector('[data-version="4.2.1"]')) {
+      list.querySelector('[data-version="4.2.2"]').insertAdjacentHTML('afterend',
+        '<li class="update-log-entry" data-version="4.2.1">' +
           '<div class="update-log-marker" aria-hidden="true"></div>' +
           '<article><div class="update-log-meta"><strong>v4.2.1</strong><time datetime="2026-08-31">2026-08-31</time><span>推免数据补充</span></div>' +
           '<h3>新增文法与外语学院 2026 届推免去向</h3><ul>' +
