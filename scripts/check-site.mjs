@@ -73,6 +73,19 @@ const promotionTypeTotal = promotionData.typeSummary.items.reduce((sum, item) =>
 if (promotionTypeTotal !== promotionData.typeSummary.total) {
   errors.push(`推免类型人数合计 ${promotionTypeTotal} 与总数 ${promotionData.typeSummary.total} 不一致`);
 }
+const promotionMajors = promotionData.colleges.flatMap(college => college.majors);
+const promotionUniversities = new Set(promotionMajors.flatMap(major => major.destinations.map(item => item.name)));
+const promotionTotal = promotionData.colleges.reduce((sum, college) => sum + college.count, 0);
+if (promotionTotal !== promotionData.meta.total) errors.push('推免去向学院人数合计与总记录数不一致');
+if (promotionData.colleges.length !== promotionData.meta.collegeCount) errors.push('推免去向学院数量与元数据不一致');
+if (promotionMajors.length !== promotionData.meta.majorCount) errors.push('推免去向专业数量与元数据不一致');
+if (promotionUniversities.size !== promotionData.meta.universityCount) errors.push('推免去向院校数量与元数据不一致');
+promotionData.colleges.forEach(college => {
+  if (college.majors.reduce((sum, major) => sum + major.count, 0) !== college.count) errors.push(`${college.name} 专业人数合计不一致`);
+  college.majors.forEach(major => {
+    if (major.destinations.reduce((sum, item) => sum + item.count, 0) !== major.count) errors.push(`${college.name} ${major.name} 去向人数合计不一致`);
+  });
+});
 
 if (errors.length) {
   console.error(errors.join('\n'));

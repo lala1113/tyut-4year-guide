@@ -9,9 +9,9 @@
     "applicableYear": "2026届",
     "source": "学校及学院公开推免喜报、公开原始文件",
     "status": "匿名汇总 · 待最终人工复核",
-    "total": 845,
-    "collegeCount": 19,
-    "majorCount": 60,
+    "total": 884,
+    "collegeCount": 20,
+    "majorCount": 63,
     "universityCount": 99
   },
   "typeSummary": {
@@ -2340,6 +2340,49 @@
               "name": "南京理工大学",
               "count": 1
             }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "土木工程学院",
+      "count": 39,
+      "majors": [
+        {
+          "name": "土木工程专业",
+          "count": 25,
+          "destinations": [
+            { "name": "浙江大学", "count": 1 },
+            { "name": "上海交通大学", "count": 2 },
+            { "name": "中国科学技术大学", "count": 1 },
+            { "name": "武汉大学", "count": 1 },
+            { "name": "哈尔滨工业大学", "count": 3 },
+            { "name": "东南大学", "count": 1 },
+            { "name": "同济大学", "count": 1 },
+            { "name": "西北工业大学", "count": 3 },
+            { "name": "大连理工大学", "count": 7 },
+            { "name": "太原理工大学", "count": 5 }
+          ]
+        },
+        {
+          "name": "道路桥梁与渡河工程专业",
+          "count": 7,
+          "destinations": [
+            { "name": "西北工业大学", "count": 1 },
+            { "name": "山东大学", "count": 1 },
+            { "name": "河海大学", "count": 1 },
+            { "name": "太原理工大学", "count": 4 }
+          ]
+        },
+        {
+          "name": "建筑环境与能源应用工程专业",
+          "count": 7,
+          "destinations": [
+            { "name": "哈尔滨工业大学", "count": 1 },
+            { "name": "同济大学", "count": 1 },
+            { "name": "大连理工大学", "count": 1 },
+            { "name": "重庆大学", "count": 2 },
+            { "name": "太原理工大学", "count": 2 }
           ]
         }
       ]

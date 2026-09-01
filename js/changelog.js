@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '4.2.3';
+  var CURRENT_VERSION = '4.2.4';
   var STORAGE_KEY = 'tyutCareerGuide.v3.changelogSeen';
 
   function readSeenVersion() {
@@ -28,14 +28,25 @@
     var latest = panel.querySelector('.update-log-latest');
     var list = panel.querySelector('.update-log-list');
     if (latest) {
-      latest.querySelector('strong').textContent = 'v4.2.3';
+      latest.querySelector('strong').textContent = 'v4.2.4';
       latest.querySelector('em').textContent = '2026-09-01 更新';
     }
-    if (list && !list.querySelector('[data-version="4.2.3"]')) {
+    if (list && !list.querySelector('[data-version="4.2.4"]')) {
       var previousLatest = list.querySelector('.is-latest');
       if (previousLatest) previousLatest.classList.remove('is-latest');
       list.insertAdjacentHTML('afterbegin',
-        '<li class="update-log-entry is-latest" data-version="4.2.3">' +
+        '<li class="update-log-entry is-latest" data-version="4.2.4">' +
+          '<div class="update-log-marker" aria-hidden="true"></div>' +
+          '<article><div class="update-log-meta"><strong>v4.2.4</strong><time datetime="2026-09-01">2026-09-01</time><span>推免数据补充</span></div>' +
+          '<h3>新增土木工程学院 2026 届推免去向</h3><ul>' +
+          '<li>新增 39 条匿名来源记录，覆盖土木工程等 3 个专业。</li>' +
+          '<li>查询数据更新为 884 条记录、20 个学院、63 个专业口径和 99 所去向院校。</li>' +
+          '<li>继续只展示学院、专业、去向院校与人数，不展示学生姓名。</li>' +
+          '</ul></article></li>');
+    }
+    if (list && !list.querySelector('[data-version="4.2.3"]')) {
+      list.querySelector('[data-version="4.2.4"]').insertAdjacentHTML('afterend',
+        '<li class="update-log-entry" data-version="4.2.3">' +
           '<div class="update-log-marker" aria-hidden="true"></div>' +
           '<article><div class="update-log-meta"><strong>v4.2.3</strong><time datetime="2026-09-01">2026-09-01</time><span>推免类型汇总</span></div>' +
           '<h3>新增 2026 年推免类型人数与占比</h3><ul>' +
