@@ -5,7 +5,7 @@
   window.PROMOTION_DATA = {
   "meta": {
     "title": "2026届推免去向查询",
-    "updatedAt": "2026-08-31",
+    "updatedAt": "2026-09-01",
     "applicableYear": "2026届",
     "source": "学校及学院公开推免喜报、公开原始文件",
     "status": "匿名汇总 · 待最终人工复核",
@@ -13,6 +13,17 @@
     "collegeCount": 19,
     "majorCount": 60,
     "universityCount": 99
+  },
+  "typeSummary": {
+    "title": "太原理工大学2026年推免类型汇总",
+    "source": "用户提供的公开汇总图（保研人）",
+    "total": 1080,
+    "items": [
+      { "name": "普通类", "count": 1038 },
+      { "name": "本研贯通", "count": 29 },
+      { "name": "支教团", "count": 12 },
+      { "name": "国防科工补偿计划", "count": 1 }
+    ]
   },
   "colleges": [
     {

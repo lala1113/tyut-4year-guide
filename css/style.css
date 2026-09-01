@@ -2394,6 +2394,10 @@ body.update-log-open { overflow: hidden; }
 .promotion-methodology-grid strong { color: var(--blue-deep); font-size: 13px; }
 .promotion-methodology-grid p { margin-top: 4px; color: var(--ink-2); font-size: 12.5px; line-height: 1.6; }
 .promotion-methodology-warning { margin: 0 17px 17px; padding: 11px 13px; border-left: 3px solid var(--orange); border-radius: 7px; background: var(--orange-soft); color: var(--ink-2); font-size: 12.5px; }
+.promotion-type-table-wrap { max-height: none; }
+.promotion-type-table-wrap tfoot { background: #F8FAFD; }
+.promotion-type-table-wrap tfoot th { padding: 10px 20px; color: var(--ink); text-align: left; }
+.promotion-type-source { margin: 12px 17px; color: var(--ink-3); font-size: 12px; }
 .promotion-summary-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .resource-personal {

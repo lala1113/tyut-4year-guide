@@ -113,9 +113,9 @@
       warning: '学院名额、综合成绩算法、竞赛加分和接收院校要求均可能变化，实际申请前必须逐项核对。'
     },
     promotion: {
-      updatedAt: '2026-08-31', applicable: '2026届公开推免喜报',
-      source: '学校及学院公开推免喜报、公开原始文件', status: '匿名汇总 · 待最终人工复核', official: false,
-      warning: '本页是去向记录而非推免率；未掌握各专业总人数时，不计算或暗示专业推免率。'
+      updatedAt: '2026-09-01', applicable: '2026届公开推免喜报与2026年类型汇总',
+      source: '学校及学院公开推免材料、用户提供的公开汇总图', status: '匿名汇总 · 待最终人工复核', official: false,
+      warning: '类型汇总与去向来源记录口径不同；未掌握各专业总人数时，不计算或暗示专业推免率。'
     },
     kaoyan: {
       updatedAt: '2026-08-25', applicable: '长期备考方法；年度节点按报考年度',
@@ -529,6 +529,23 @@
     document.getElementById('promotionCollegeCount').textContent = data.meta.collegeCount;
     document.getElementById('promotionMajorCount').textContent = data.meta.majorCount;
     document.getElementById('promotionUniversityCount').textContent = data.meta.universityCount;
+
+    var typeSummary = data.typeSummary;
+    var typeTableBody = document.getElementById('promotionTypeTableBody');
+    if (typeSummary && typeTableBody) {
+      typeSummary.items.forEach(function (item) {
+        var row = document.createElement('tr');
+        [item.name, item.count + '人', (item.count / typeSummary.total * 100).toFixed(2) + '%'].forEach(function (value) {
+          var cell = document.createElement('td');
+          cell.textContent = value;
+          row.appendChild(cell);
+        });
+        typeTableBody.appendChild(row);
+      });
+      document.getElementById('promotionTypeTotalLabel').textContent = typeSummary.total;
+      document.getElementById('promotionTypeTotal').textContent = typeSummary.total + '人';
+      document.getElementById('promotionTypeSource').textContent = '数据来源：' + typeSummary.source + '。';
+    }
 
     data.colleges.forEach(function (college) {
       var option = document.createElement('option');

@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '4.2.2';
+  var CURRENT_VERSION = '4.2.3';
   var STORAGE_KEY = 'tyutCareerGuide.v3.changelogSeen';
 
   function readSeenVersion() {
@@ -28,14 +28,25 @@
     var latest = panel.querySelector('.update-log-latest');
     var list = panel.querySelector('.update-log-list');
     if (latest) {
-      latest.querySelector('strong').textContent = 'v4.2.2';
+      latest.querySelector('strong').textContent = 'v4.2.3';
       latest.querySelector('em').textContent = '2026-09-01 更新';
     }
-    if (list && !list.querySelector('[data-version="4.2.2"]')) {
+    if (list && !list.querySelector('[data-version="4.2.3"]')) {
       var previousLatest = list.querySelector('.is-latest');
       if (previousLatest) previousLatest.classList.remove('is-latest');
       list.insertAdjacentHTML('afterbegin',
-        '<li class="update-log-entry is-latest" data-version="4.2.2">' +
+        '<li class="update-log-entry is-latest" data-version="4.2.3">' +
+          '<div class="update-log-marker" aria-hidden="true"></div>' +
+          '<article><div class="update-log-meta"><strong>v4.2.3</strong><time datetime="2026-09-01">2026-09-01</time><span>推免类型汇总</span></div>' +
+          '<h3>新增 2026 年推免类型人数与占比</h3><ul>' +
+          '<li>新增普通类、本研贯通、支教团和国防科工补偿计划 4 类汇总，共 1080 人。</li>' +
+          '<li>占比统一按人数重新计算，并说明原图最后两行标注不一致。</li>' +
+          '<li>明确类型汇总与 845 条去向来源记录口径不同，不能相互反推。</li>' +
+          '</ul></article></li>');
+    }
+    if (list && !list.querySelector('[data-version="4.2.2"]')) {
+      list.querySelector('[data-version="4.2.3"]').insertAdjacentHTML('afterend',
+        '<li class="update-log-entry" data-version="4.2.2">' +
           '<div class="update-log-marker" aria-hidden="true"></div>' +
           '<article><div class="update-log-meta"><strong>v4.2.2</strong><time datetime="2026-09-01">2026-09-01</time><span>链接与可维护性修复</span></div>' +
           '<h3>修复失效来源与公共导航细节</h3><ul>' +

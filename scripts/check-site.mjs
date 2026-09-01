@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 
 const root = path.resolve(import.meta.dirname, '..');
 const modulePages = [
@@ -9,7 +10,8 @@ const modulePages = [
 const htmlPages = ['index.html', '404.html', 'promotion.html', ...modulePages];
 const required = [
   ...htmlPages, 'robots.txt', 'sitemap.xml', 'js/vendor/marked.min.js',
-  'js/vendor/purify.min.js', 'css/style.css', 'js/features.js', 'js/search.js'
+  'js/vendor/purify.min.js', 'css/style.css', 'js/features.js', 'js/search.js',
+  'js/promotion-data.js'
 ];
 const errors = [];
 
@@ -62,6 +64,15 @@ if (/cdn\.jsdelivr\.net\/npm\/(?:marked|dompurify)/.test(allHtml)) errors.push('
 if (!/promotion-destinations\.html#promotion/.test(read('promotion.html'))) errors.push('旧推免链接未配置跳转');
 if (!/localBackupExport/.test(read('action-center.html'))) errors.push('行动中心缺少备份入口');
 if (!/promotionCombinationCount/.test(read('promotion-destinations.html'))) errors.push('推免页面缺少聚合口径');
+if (!/promotionTypeTableBody/.test(read('promotion-destinations.html'))) errors.push('推免页面缺少类型汇总');
+
+const promotionContext = { window: {} };
+vm.runInNewContext(read('js/promotion-data.js'), promotionContext);
+const promotionData = promotionContext.window.PROMOTION_DATA;
+const promotionTypeTotal = promotionData.typeSummary.items.reduce((sum, item) => sum + item.count, 0);
+if (promotionTypeTotal !== promotionData.typeSummary.total) {
+  errors.push(`推免类型人数合计 ${promotionTypeTotal} 与总数 ${promotionData.typeSummary.total} 不一致`);
+}
 
 if (errors.length) {
   console.error(errors.join('\n'));
