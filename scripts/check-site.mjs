@@ -14,6 +14,8 @@ const required = [
   'js/promotion-data.js'
 ];
 const errors = [];
+const analyticsToken = '33af72cd8b04492cae71478ae716f916';
+const analyticsScript = 'https://static.cloudflareinsights.com/beacon.min.js';
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), 'utf8');
@@ -32,6 +34,10 @@ for (const file of modulePages) {
 
 for (const file of htmlPages) {
   const html = read(file);
+  const analyticsMatches = html.match(new RegExp(analyticsToken, 'g')) || [];
+  if (analyticsMatches.length !== 1 || !html.includes(analyticsScript)) {
+    errors.push(`${file} Cloudflare Web Analytics snippet is missing or duplicated`);
+  }
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
   if (duplicates.length) errors.push(`${file} 存在重复 id：${[...new Set(duplicates)].join(', ')}`);
