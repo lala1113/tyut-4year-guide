@@ -8,7 +8,7 @@
     "updatedAt": "2026-09-01",
     "applicableYear": "2026届",
     "source": "学校及学院公开推免喜报、公开原始文件",
-    "status": "匿名汇总 · 待最终人工复核",
+    "status": "匿名汇总",
     "total": 884,
     "collegeCount": 20,
     "majorCount": 63,

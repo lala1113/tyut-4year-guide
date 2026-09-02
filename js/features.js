@@ -114,7 +114,7 @@
     },
     promotion: {
       updatedAt: '2026-09-01', applicable: '2026届公开推免喜报与2026年类型汇总',
-      source: '学校及学院公开推免材料、用户提供的公开汇总图', status: '匿名汇总 · 待最终人工复核', official: false,
+      source: '学校及学院公开推免材料、用户提供的公开汇总图', status: '匿名汇总', official: false,
       warning: '类型汇总与去向来源记录口径不同；未掌握各专业总人数时，不计算或暗示专业推免率。'
     },
     kaoyan: {
@@ -144,15 +144,10 @@
       var section = document.getElementById(sectionId);
       if (!section || section.querySelector(':scope > .verification-card')) return;
       var config = VERIFICATION_CONFIG[sectionId];
-      var updated = new Date(config.updatedAt + 'T00:00:00');
-      var reviewEvery = config.official ? 120 : 90;
-      var reviewAt = new Date(updated.getTime() + reviewEvery * 86400000);
-      var needsReview = Date.now() > reviewAt.getTime();
-      var reviewLabel = needsReview ? '已到复核时间' : '建议于 ' + reviewAt.toISOString().slice(0, 10) + ' 前复核';
       var anchor = section.querySelector('.section-head, .promotion-hero');
       if (!anchor) return;
       var card = document.createElement('aside');
-      card.className = 'verification-card' + (needsReview ? ' needs-review' : '');
+      card.className = 'verification-card';
       card.setAttribute('aria-label', '内容核验信息');
       card.innerHTML =
         '<div class="verification-card__head">' +
@@ -165,7 +160,6 @@
           '<div><span>最后更新</span><b>' + escapeHtml(config.updatedAt) + '</b></div>' +
           '<div><span>适用范围</span><b>' + escapeHtml(config.applicable) + '</b></div>' +
           '<div><span>信息来源</span><b>' + escapeHtml(config.source) + '</b></div>' +
-          '<div><span>复核提醒</span><b>' + escapeHtml(reviewLabel) + '</b></div>' +
         '</div>' +
         '<p>' + escapeHtml(config.warning) + '</p>';
       anchor.insertAdjacentElement('afterend', card);
