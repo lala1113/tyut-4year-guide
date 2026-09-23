@@ -2390,6 +2390,36 @@ body.update-log-open { overflow: hidden; }
 .wechat-entry-qr img { display: block; width: 100%; height: auto; border-radius: 6px; }
 .wechat-entry-qr:focus-visible, .wechat-entry-link:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
 
+.mini-program-welcome[hidden] { display: none !important; }
+.mini-program-welcome {
+  position: fixed;
+  right: 20px;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 120;
+  width: min(340px, calc(100vw - 32px));
+  pointer-events: none;
+}
+.mini-program-welcome-card {
+  position: relative;
+  padding: 20px 22px 18px;
+  border: 1px solid #D8E6F2;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(0, 34, 68, .2);
+  pointer-events: auto;
+  animation: miniProgramWelcomeIn .24s ease-out both;
+}
+.mini-program-welcome-kicker { display: block; margin: 0 30px 6px 0; color: var(--orange-deep); font-size: 11px; font-weight: 800; letter-spacing: .08em; }
+.mini-program-welcome-card h2 { margin: 0 28px 7px 0; color: var(--blue-deep); font-size: 19px; }
+.mini-program-welcome-card p { margin: 0; color: var(--ink-2); font-size: 13px; line-height: 1.7; }
+.mini-program-welcome-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: var(--blue); font-size: 13px; font-weight: 700; }
+.mini-program-welcome-link:hover { color: var(--orange-deep); }
+.mini-program-welcome-close { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 34px; height: 34px; border: 0; border-radius: 50%; background: #F2F6FA; color: var(--ink-2); cursor: pointer; font-size: 22px; line-height: 1; }
+.mini-program-welcome-close:hover { background: var(--blue-soft); color: var(--blue-deep); }
+.mini-program-welcome-close:focus-visible, .mini-program-welcome-link:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+@keyframes miniProgramWelcomeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .mini-program-welcome-card { animation: none; } }
+
 .module-page-main .resource-source-section[hidden] {
   display: none;
 }

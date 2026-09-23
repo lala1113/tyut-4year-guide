@@ -44,6 +44,45 @@
 
   var currentFile = window.location.pathname.split('/').pop() || 'index.html';
 
+  /* ---------- 小程序欢迎提示：每个标签页会话只展示一次 ---------- */
+  function initMiniProgramWelcome() {
+    var storageKey = 'tyutCareerGuide.v1.miniProgramWelcomeSeen';
+    try {
+      if (window.sessionStorage.getItem(storageKey)) return;
+      window.sessionStorage.setItem(storageKey, '1');
+    } catch (error) { return; }
+
+    var popup = document.createElement('div');
+    popup.className = 'mini-program-welcome';
+    popup.hidden = true;
+    popup.innerHTML = '<section class="mini-program-welcome-card" role="dialog" aria-modal="false" aria-labelledby="miniProgramWelcomeTitle" aria-describedby="miniProgramWelcomeDesc">' +
+      '<button type="button" class="mini-program-welcome-close" aria-label="关闭小程序介绍">×</button>' +
+      '<span class="mini-program-welcome-kicker">微信小程序已上线</span>' +
+      '<h2 id="miniProgramWelcomeTitle">理工启航指南</h2>' +
+      '<p id="miniProgramWelcomeDesc">打开微信搜索「理工启航指南」，也可以查看网站里的小程序码。</p>' +
+      '<a class="mini-program-welcome-link" href="index.html#wechat-guide">查看小程序入口 <span aria-hidden="true">→</span></a>' +
+      '</section>';
+    document.body.appendChild(popup);
+
+    var card = popup.querySelector('.mini-program-welcome-card');
+    var closeButton = popup.querySelector('.mini-program-welcome-close');
+    function closePopup() { popup.hidden = true; }
+
+    closeButton.addEventListener('click', closePopup);
+    card.addEventListener('click', function (event) {
+      if (event.target.closest('a')) closePopup();
+    });
+    document.addEventListener('pointerdown', function (event) {
+      if (!popup.hidden && !card.contains(event.target)) closePopup();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (!popup.hidden && event.key === 'Escape') closePopup();
+    });
+
+    window.setTimeout(function () { popup.hidden = false; }, 1100);
+  }
+  initMiniProgramWelcome();
+
   var spy = function () {
     var pos = window.scrollY + 140;
     var currentId = '';
