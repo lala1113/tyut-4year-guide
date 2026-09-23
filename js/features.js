@@ -1,6 +1,6 @@
 /* ==========================================================================
    太原理工大学 · 四年生涯规划指南 — 工具化功能
-   核验卡 / 行动中心 / 推免去向 / 资源中心 / 阅读工具 / 方向探索 / 择校对比
+   核验卡 / 行动中心 / 推免去向 / 资源中心 / 阅读工具 / 择校对比
    ========================================================================== */
 
 (function () {
@@ -380,129 +380,6 @@
     render();
   }
 
-  /* ---------- 六题方向探索 ---------- */
-  var ASSESSMENT_QUESTIONS = [
-    { title: '你更喜欢哪种学习方式？', options: [
-      { text: '持续深入一个专业问题', scores: { baoyan: 2, kaoyan: 2 } },
-      { text: '围绕目标考试系统训练', scores: { kaoyan: 3, kaogong: 2 } },
-      { text: '在真实项目中边做边学', scores: { jiuye: 3 } },
-      { text: '关注公共事务和社会议题', scores: { kaogong: 3 } }
-    ] },
-    { title: '你目前最有把握的优势是？', options: [
-      { text: '成绩稳定、排名靠前', scores: { baoyan: 3 } },
-      { text: '自律性强，能长期备考', scores: { kaoyan: 2, kaogong: 2 } },
-      { text: '沟通协作和动手能力', scores: { jiuye: 3 } },
-      { text: '表达、写作和信息分析', scores: { kaogong: 2, jiuye: 1 } }
-    ] },
-    { title: '你希望毕业后优先获得什么？', options: [
-      { text: '继续研究和深造', scores: { baoyan: 3, kaoyan: 2 } },
-      { text: '进入稳定的公共部门', scores: { kaogong: 3 } },
-      { text: '尽快积累工作经验', scores: { jiuye: 3 } },
-      { text: '先保留多种选择', scores: { kaoyan: 1, kaogong: 1, jiuye: 1 } }
-    ] },
-    { title: '你能接受的准备周期是？', options: [
-      { text: '从大一开始持续积累', scores: { baoyan: 3 } },
-      { text: '集中准备一年左右', scores: { kaoyan: 2, kaogong: 2 } },
-      { text: '边实习边寻找机会', scores: { jiuye: 3 } },
-      { text: '根据公告和机会灵活安排', scores: { kaogong: 2, jiuye: 1 } }
-    ] },
-    { title: '你更愿意把时间投入到哪里？', options: [
-      { text: '课程成绩、科研和竞赛', scores: { baoyan: 3 } },
-      { text: '数学、英语、政治和专业课', scores: { kaoyan: 3 } },
-      { text: '实习、作品集和面试', scores: { jiuye: 3 } },
-      { text: '行测、申论和公共事务积累', scores: { kaogong: 3 } }
-    ] },
-    { title: '如果计划发生变化，你通常会？', options: [
-      { text: '根据成绩和政策重新评估', scores: { baoyan: 2, kaoyan: 1 } },
-      { text: '坚持既定计划并调整节奏', scores: { kaoyan: 2 } },
-      { text: '快速尝试新的岗位或项目', scores: { jiuye: 2 } },
-      { text: '关注公告并保留备选岗位', scores: { kaogong: 2 } }
-    ] }
-  ];
-
-  var ASSESSMENT_DIRECTIONS = {
-    baoyan: { title: '保研 · 推免', href: 'baoyan.html#baoyan', strength: '成绩、排名和持续积累可能是你的主要优势。', next: ['核对本学院推免办法和前六学期成绩', '整理竞赛、项目和证书证明材料', '向辅导员或导师确认当年口径'] },
-    kaoyan: { title: '考研 · 统考', href: 'kaoyan.html#kaoyan', strength: '你可能更适合用明确目标和长期训练换取稳定进步。', next: ['建立 3—6 所目标院校清单', '做一次真题或阶段测试了解基础', '制定每周可执行的公共课与专业课计划'] },
-    kaogong: { title: '考公 · 选调', href: 'kaogong.html#kaogong', strength: '你对稳定性、公共事务和结构化训练可能有较强匹配度。', next: ['下载当年国考或省考职位表做筛选', '用真题测试行测与申论基础', '关注学校就业部门与选调正式通知'] },
-    jiuye: { title: '直接就业', href: 'jiuye.html#jiuye', strength: '你可能更适合通过项目、实习和反馈快速形成职业能力。', next: ['收集 20 份目标岗位 JD', '参加一次双选会或企业宣讲', '完成一版针对岗位的简历与项目说明'] }
-  };
-
-  function initAssessment() {
-    var root = document.getElementById('assessmentCard');
-    var start = document.getElementById('assessmentStart');
-    if (!root || !start) return;
-    var current = 0;
-    var answers = [];
-    var selected = -1;
-
-    function renderQuestion() {
-      var question = ASSESSMENT_QUESTIONS[current];
-      root.innerHTML =
-        '<div class="assessment-progress"><span>' + (current + 1) + ' / ' + ASSESSMENT_QUESTIONS.length + '</span><i><b style="width:' + ((current + 1) / ASSESSMENT_QUESTIONS.length * 100) + '%"></b></i></div>' +
-        '<div class="assessment-question"><span>Q' + (current + 1) + '</span><h3>' + escapeHtml(question.title) + '</h3></div>' +
-        '<div class="assessment-options">' + question.options.map(function (option, index) {
-          return '<button type="button" class="' + (selected === index ? 'selected' : '') + '" data-assessment-option="' + index + '">' + escapeHtml(option.text) + '</button>';
-        }).join('') + '</div>' +
-        '<div class="assessment-actions">' +
-          (current ? '<button type="button" data-assessment-back>上一步</button>' : '<span></span>') +
-          '<button type="button" class="primary" data-assessment-next ' + (selected < 0 ? 'disabled' : '') + '>' + (current === ASSESSMENT_QUESTIONS.length - 1 ? '查看结果' : '下一题') + '</button>' +
-        '</div>';
-    }
-
-    function renderResult() {
-      var scores = { baoyan: 0, kaoyan: 0, kaogong: 0, jiuye: 0 };
-      answers.forEach(function (answer, questionIndex) {
-        var result = ASSESSMENT_QUESTIONS[questionIndex].options[answer].scores;
-        Object.keys(result).forEach(function (key) { scores[key] += result[key]; });
-      });
-      var ranked = Object.keys(scores).sort(function (a, b) { return scores[b] - scores[a]; });
-      var direction = ASSESSMENT_DIRECTIONS[ranked[0]];
-      var runnerUp = ASSESSMENT_DIRECTIONS[ranked[1]];
-      root.innerHTML =
-        '<div class="assessment-result">' +
-          '<span class="assessment-result-label">当前更匹配的准备方向</span>' +
-          '<h3 class="serif">' + escapeHtml(direction.title) + '</h3>' +
-          '<p>' + escapeHtml(direction.strength) + '</p>' +
-          '<div class="assessment-next"><strong>接下来先做三件事</strong><ol>' + direction.next.map(function (item) { return '<li>' + escapeHtml(item) + '</li>'; }).join('') + '</ol></div>' +
-          '<p class="assessment-runner">也可以同步了解：' + escapeHtml(runnerUp.title) + '，为自己保留备选。</p>' +
-          '<div class="assessment-result-actions"><a href="' + direction.href + '">查看' + escapeHtml(direction.title) + '路径 →</a><button type="button" data-assessment-restart>重新评估</button></div>' +
-        '</div>';
-    }
-
-    start.addEventListener('click', function () { renderQuestion(); });
-    root.addEventListener('click', function (event) {
-      var option = event.target.closest('[data-assessment-option]');
-      if (option) {
-        selected = Number(option.dataset.assessmentOption);
-        renderQuestion();
-        return;
-      }
-      if (event.target.closest('[data-assessment-back]')) {
-        if (current > 0) {
-          current -= 1;
-          selected = answers[current] == null ? -1 : answers[current];
-          renderQuestion();
-        }
-        return;
-      }
-      if (event.target.closest('[data-assessment-next]') && selected >= 0) {
-        answers[current] = selected;
-        if (current === ASSESSMENT_QUESTIONS.length - 1) renderResult();
-        else {
-          current += 1;
-          selected = answers[current] == null ? -1 : answers[current];
-          renderQuestion();
-        }
-        return;
-      }
-      if (event.target.closest('[data-assessment-restart]')) {
-        current = 0;
-        answers = [];
-        selected = -1;
-        renderQuestion();
-      }
-    });
-  }
 
   /* ---------- 2026届推免去向查询 ---------- */
   function initPromotionQuery() {
@@ -1008,7 +885,6 @@
     initVerificationCards();
     initActionCenter();
     initLocalBackup();
-    initAssessment();
     initPromotionQuery();
     initSchoolCompare();
     initResourceHub();

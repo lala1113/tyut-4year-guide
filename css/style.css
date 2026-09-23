@@ -1708,7 +1708,7 @@ a:focus-visible {
 .saved-section-row > div { display: flex; flex-wrap: wrap; gap: 8px; }
 .saved-section-row a { padding: 5px 10px; border-radius: 999px; background: var(--blue-soft); font-weight: 700; }
 
-/* 六题方向探索 */
+/* 十题方向探索 */
 .assessment-section { padding: 70px 24px; color: #fff; background: #092D4D; }
 .assessment-shell { max-width: calc(var(--maxw) - 48px); margin: 0 auto; display: grid; grid-template-columns: .82fr 1.18fr; gap: 52px; align-items: center; }
 .assessment-intro h1,
@@ -1723,18 +1723,40 @@ a:focus-visible {
 .assessment-progress b { display: block; height: 100%; border-radius: inherit; background: var(--orange); }
 .assessment-question { display: flex; gap: 13px; align-items: flex-start; margin: 24px 0 18px; }
 .assessment-question > span { display: grid; place-items: center; flex: 0 0 36px; height: 36px; border-radius: 10px; background: var(--blue-soft); color: var(--blue); font-weight: 800; }
-.assessment-question h3 { padding-top: 3px; font-size: 21px; }
-.assessment-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.assessment-options button { min-height: 56px; padding: 10px 12px; border: 1px solid #D5E0EA; border-radius: 10px; background: #FAFCFE; color: var(--ink-2); cursor: pointer; text-align: left; }
-.assessment-options button:hover { border-color: var(--blue); color: var(--blue); }
-.assessment-options button.selected { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-deep); font-weight: 700; box-shadow: inset 0 0 0 1px var(--blue); }
+.assessment-question h2 { padding-top: 3px; font-size: 21px; line-height: 1.55; scroll-margin-top: calc(var(--header-h) + 24px); }
+.assessment-hint { margin: -6px 0 18px; font-size: 13px; color: var(--ink-3); }
+.assessment-options { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.assessment-option { display: flex; align-items: flex-start; gap: 10px; min-height: 52px; padding: 12px 14px; border: 1px solid #D5E0EA; border-radius: 10px; background: #FAFCFE; color: var(--ink-2); cursor: pointer; font-size: 14px; line-height: 1.65; }
+.assessment-option input { flex: 0 0 auto; width: 17px; height: 17px; margin-top: 3px; accent-color: var(--blue); }
+.assessment-option:hover { border-color: var(--blue); }
+.assessment-option:has(input:checked) { border-color: var(--blue); background: var(--blue-soft); color: var(--blue-deep); font-weight: 700; box-shadow: inset 0 0 0 1px var(--blue); }
+.assessment-option:focus-within { outline: 3px solid var(--orange); outline-offset: 2px; }
+.assessment-method { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,.8); }
+.assessment-method summary { cursor: pointer; color: #fff; }
+.assessment-method p { margin-top: 10px; }
+.assessment-method a { display: inline-block; margin-top: 10px; color: #fff; text-decoration: underline; }
 .assessment-actions { display: flex; justify-content: space-between; margin-top: 22px; }
 .assessment-actions button { padding: 9px 16px; border: 0; border-radius: 9px; background: #EDF2F7; color: var(--ink-2); cursor: pointer; }
 .assessment-actions .primary { background: var(--blue); color: #fff; }
 .assessment-actions button:disabled { opacity: .45; cursor: default; }
 .assessment-result-label { color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: 1px; }
-.assessment-result h3 { margin: 6px 0 8px; color: var(--blue-deep); font-size: 28px; }
+.assessment-result h2 { margin: 6px 0 8px; color: var(--blue-deep); font-size: 26px; scroll-margin-top: calc(var(--header-h) + 24px); }
 .assessment-result > p { color: var(--ink-2); font-size: 14px; }
+.assessment-direction { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.assessment-direction h3 { margin-bottom: 8px; color: var(--blue-deep); font-size: 18px; }
+.assessment-direction strong, .assessment-context strong { font-size: 13px; color: var(--blue-deep); }
+.assessment-direction p, .assessment-direction ul, .assessment-context ul { color: var(--ink-2); font-size: 13px; line-height: 1.8; }
+.assessment-direction ul, .assessment-context ul { padding-left: 20px; margin: 6px 0 10px; }
+.assessment-route-links { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 10px; }
+.assessment-route-links a { padding: 6px 0; color: var(--blue); font-size: 13px; font-weight: 700; text-decoration: underline; }
+.assessment-experiment { margin-top: 10px; }
+.assessment-context { margin: 16px 0; }
+.assessment-review { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 13px; }
+.assessment-review summary { cursor: pointer; color: var(--blue); font-weight: 700; }
+.assessment-review ol { margin: 12px 0 0; padding-left: 22px; }
+.assessment-review li { padding: 10px 0; }
+.assessment-review p { margin: 4px 0; color: var(--ink-2); }
+.assessment-review button { min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--blue); background: #fff; cursor: pointer; }
 .assessment-next { margin: 18px 0 10px; padding: 15px 18px; border-radius: 11px; background: var(--blue-softer); }
 .assessment-next strong { color: var(--blue-deep); font-size: 13px; }
 .assessment-next ol { margin: 7px 0 0 20px; color: var(--ink-2); font-size: 13px; }

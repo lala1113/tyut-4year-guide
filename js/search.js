@@ -12,7 +12,7 @@
   var STATIC_INDEX = [
     item('首页 · 四年生涯规划指南', '按年级梳理保研、考研、考公与就业四条路线。', 'index.html', 'tool', 'all', false, '首页 生涯规划 太原理工 四年'),
     item('本月行动中心', '按年级与当前月份生成三项行动建议，可加入待办并在本机保存进度。', 'action-center.html#action-center', 'tool', 'all', false, '本月 任务 待办 年级 进度 localStorage'),
-    item('六题方向探索', '通过六个选择找到当前更匹配的准备方向，并获得三项下一步行动。', 'exploration.html#assessment', 'tool', 'all', false, '测评 选择 保研 考研 考公 就业'),
+    item('十题方向探索', '通过十个问题梳理兴趣、经历与现实条件，获得方向依据、路径建议和体验任务。', 'exploration.html#assessment', 'tool', 'all', false, '测评 选择 兴趣 价值观 十题 10题 保研 考研 考公 就业'),
     item('基础篇 · 学业基石', '四六级、转专业、评奖评优、绩点与挂科提醒。', 'foundation.html#foundation', 'policy', 'foundation', true, 'GPA 绩点 学业 大一 大二 四六级'),
     item('四六级备考与要求', '查询 CET-4、CET-6 的时间安排、准备方法及相关资格要求。', 'foundation.html#foundation', 'policy', 'foundation', true, '英语 四级 六级 425 报名'),
     item('转专业政策', '查看转专业申请条件、时间窗口和官方通知入口。', 'foundation.html#foundation', 'policy', 'foundation', true, '转专业 GPA 排名 志愿 教务'),

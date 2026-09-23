@@ -11,7 +11,7 @@ const htmlPages = ['index.html', '404.html', 'promotion.html', ...modulePages];
 const required = [
   ...htmlPages, 'robots.txt', 'sitemap.xml', 'js/vendor/marked.min.js',
   'js/vendor/purify.min.js', 'css/style.css', 'js/features.js', 'js/search.js',
-  'js/promotion-data.js'
+  'js/promotion-data.js', 'js/content-assessment.js', 'js/assessment.js'
 ];
 const errors = [];
 const analyticsToken = '33af72cd8b04492cae71478ae716f916';

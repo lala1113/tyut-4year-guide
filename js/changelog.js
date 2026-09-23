@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var CURRENT_VERSION = '4.2.4';
+  var CURRENT_VERSION = '4.3.0';
   var STORAGE_KEY = 'tyutCareerGuide.v3.changelogSeen';
 
   function readSeenVersion() {
@@ -28,8 +28,8 @@
     var latest = panel.querySelector('.update-log-latest');
     var list = panel.querySelector('.update-log-list');
     if (latest) {
-      latest.querySelector('strong').textContent = 'v4.2.4';
-      latest.querySelector('em').textContent = '2026-09-01 更新';
+      latest.querySelector('strong').textContent = 'v4.3.0';
+      latest.querySelector('em').textContent = '2026-09-07 更新';
     }
     if (list && !list.querySelector('[data-version="4.2.4"]')) {
       var previousLatest = list.querySelector('.is-latest');
@@ -87,6 +87,20 @@
           '<li>标明历史数据年份，清理搜索摘要并补充核验标签。</li>' +
           '<li>新增本地记录备份恢复、内页主标题、跳到正文与手机端吸顶目录。</li>' +
           '<li>Markdown 渲染脚本改为站内托管，降低外部网络波动影响。</li>' +
+          '</ul></article></li>');
+    }
+
+    if (list && !list.querySelector('[data-version="4.3.0"]')) {
+      var previousEntry = list.querySelector('.is-latest');
+      if (previousEntry) previousEntry.classList.remove('is-latest');
+      list.insertAdjacentHTML('afterbegin',
+        '<li class="update-log-entry is-latest" data-version="4.3.0">' +
+          '<div class="update-log-marker" aria-hidden="true"></div>' +
+          '<article><div class="update-log-meta"><strong>v4.3.0</strong><time datetime="2026-09-07">2026-09-07</time><span>方向探索升级</span></div>' +
+          '<h3>用十个问题梳理下一步方向</h3><ul>' +
+          '<li>结合兴趣、价值取向、真实经历、深造动机与现实安排形成建议。</li>' +
+          '<li>结果展示回答依据、条件对应的准备路径与两周体验任务；方向接近时并列呈现。</li>' +
+          '<li>支持回看修改回答和键盘作答，保留原有页面风格。</li>' +
           '</ul></article></li>');
     }
 
